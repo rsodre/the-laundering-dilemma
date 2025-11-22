@@ -27,6 +27,8 @@ The user asks questions about the following coding languages:
 - TypeScript
 - JavaScript
 - CSS
+- shadcn ui
+- Tailwind
 
 ### Code Implementation Guidelines
 Follow these rules when you write code:
@@ -35,4 +37,3 @@ Follow these rules when you write code:
 - Use descriptive variable and function/const names. Also, event functions should be named with a “handle” prefix, like “handleClick” for onClick and “handleKeyDown” for onKeyDown.
 - Implement accessibility features on elements. For example, a tag should have a tabindex=“0”, aria-label, on:click, and on:keydown, and similar attributes.
 - Use consts instead of functions, for example, “const toggle = () =>”. Also, define a type if possible.
-- All UI compositions must be made using Radix Themes

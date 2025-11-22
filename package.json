@@ -4,7 +4,8 @@
   "workspaces": [
     "agents/*",
     "sequencer",
-    "libs"
+    "libs",
+    "client"
   ],
   "scripts": {
     "experiment": "mprocs --config ./mprocs.experiment.yaml"
