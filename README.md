@@ -12,13 +12,12 @@ The Laundering Dilemma
 * Daydreams [@lucid-agents](https://github.com/daydreamsai/lucid-agents)
 
 
-## Structure
+## Project Structure
 
 * `/agents/laundromat`: Laundromat agent endpoints, accept payments in x402, where Syndicates launder their money.
 * `/agents/syndicate`: Single Syndicate agents. Multiple instances can be started, one for each active Syndicate.
 * `/agents/request`: Scripts for testing, create requests for agents, check balances, etc.
-
-
+* `/libs`: Misc functions used by all packages.
 
 
 ## Development notes

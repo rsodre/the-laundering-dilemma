@@ -2,6 +2,8 @@
   "name": "the-laundering-dilemma",
   "version": "0.1.0",
   "workspaces": [
+    "agents/*",
+    "libs"
   ],
   "devDependencies": {
   }

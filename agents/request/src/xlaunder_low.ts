@@ -6,8 +6,7 @@ import {
   type Hex,
 } from "x402-fetch";
 import { Signer, isEvmSignerWallet } from 'x402/types';
-import { _getBalance } from "./lib/wagmi";
-import { sleep } from "./lib/misc";
+import { formatCash, getBalance, sleep } from "libs/src";
 
 config();
 
@@ -38,10 +37,11 @@ async function main(): Promise<void> {
 
   // Get the USDC balance of signer on Base Sepolia
   // console.log("signer", signer_address);
-  const balance_before = await _getBalance(signer_address);
-  console.log(`USDC Balance on base-sepolia:`, balance_before);
+  const balance_before = await getBalance(signer_address);
+  // console.log(`USDC Balance on base-sepolia:`, balance_before);
+  console.log(`[USDC] Balance before:`, balance_before.formatted);
 
-
+  //@ts-ignore
   const fetchWithPayment = wrapFetchWithPayment(fetch, signer);
   const response = await fetchWithPayment(url, {
     method: "POST",
@@ -69,8 +69,12 @@ async function main(): Promise<void> {
   // balance after...
   console.log(`wait...`);
   await sleep(2000);
-  const balance_after = await _getBalance(signer_address);
-  console.log(`USDC Balance on base-sepolia after request:`, balance_after);
+  const balance_after = await getBalance(signer_address);
+  // console.log(`USDC Balance on base-sepolia after request:`, balance_after);
+  console.log(`[USDC] Balance after:`, balance_after.formatted);
+
+  const difference = (balance_after.balance - balance_before.balance);
+  console.log(`[USDC] Difference:`, formatCash(difference));
 }
 
 main().catch((error) => {

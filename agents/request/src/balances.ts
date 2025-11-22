@@ -4,7 +4,7 @@ import {
   type Hex,
 } from "x402-fetch";
 import { Signer } from 'x402/types';
-import { _getBalance } from "./lib/wagmi";
+import { formatCash, getBalance } from "libs/src";
 
 config();
 
@@ -16,10 +16,10 @@ async function main(): Promise<void> {
   //@ts-ignore
   const signer_address = signer.account.address;
 
-  const balance_sender = await _getBalance(signer_address);
+  const balance_sender = await getBalance(signer_address);
   console.log(`[Sender] USDC Balance on base-sepolia:`, balance_sender);
 
-  const balance_receiver = await _getBalance(process.env.PAYMENTS_RECEIVABLE_ADDRESS as string);
+  const balance_receiver = await getBalance(process.env.PAYMENTS_RECEIVABLE_ADDRESS as string);
   console.log(`[Receiver] USDC Balance on base-sepolia:`, balance_receiver);
 }
 
