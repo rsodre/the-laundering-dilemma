@@ -3,6 +3,11 @@ import { createAgentApp } from "@lucid-agents/hono";
 import { handler } from "./laundromat";
 import { LaunderStrategy, LAUNDROMATS } from "libs/src";
 
+
+
+//---------------------------------------------------------
+// Daydreams agent setup
+//
 const appOptions = {
   payments: {
     facilitatorUrl: process.env.PAYMENTS_FACILITATOR_URL as `${string}://${string}`,
@@ -20,9 +25,12 @@ const { app, runtime, addEntrypoint } = createAgentApp(
   typeof appOptions !== 'undefined' ? appOptions : {}
 );
 
-const _price = (strategy: LaunderStrategy) => {
-  return (LAUNDROMATS[strategy].amount / 1000000).toFixed(6);
-};
+
+//---------------------------------------------------------
+// Daydreams endpoints
+//
+
+const _price = (strategy: LaunderStrategy) => (LAUNDROMATS[strategy].amount / 1000000).toFixed(6);
 
 addEntrypoint({
   key: LAUNDROMATS[LaunderStrategy.Conservative].endpoint,

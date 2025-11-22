@@ -33,34 +33,43 @@ Based on The Prisoner's Dilemma
 ## Environment setup
 
 * `/agents/laundromat/.env`:
-```
+```sh
+# x402 setup
 PAYMENTS_FACILITATOR_URL=https://x402.org/facilitator
 PAYMENTS_NETWORK=base-sepolia
 PAYMENTS_RECEIVABLE_ADDRESS=<...>
-PRIVATE_KEY=<...>
+# Vercel AI SDK
 AI_GATEWAY_API_KEY=<...>
 ```
 
 * `/agents/syndicate/.env`:
-```
+```sh
+# x402 setup
 PAYMENTS_FACILITATOR_URL=https://x402.org/facilitator
 PAYMENTS_NETWORK=base-sepolia
-PAYMENTS_RECEIVABLE_ADDRESS=<...>
-PRIVATE_KEY=<...>
+# Vercel AI SDK
 AI_GATEWAY_API_KEY=<...>
+# Coinbase CDP setup
+CDP_API_KEY_ID=<...>
+CDP_API_KEY_SECRET=<...>
+CDP_WALLET_SECRET=<...>
+# syndicate name, linked to Server Wallet
+SYNDICATE_NAME=Syndicate1
 ```
 
 * `/agents/request/.env`:
-```
+```sh
 PRIVATE_KEY=<...>
+# Coinbase CDP setup
 CDP_API_KEY_ID=<...>
 CDP_API_KEY_SECRET=<...>
+CDP_WALLET_SECRET=<...>
 ```
 
 ## Development notes
 
 Create daydreams agents...
-```
+```sh
 bunx @lucid-agents/cli
 ```
 

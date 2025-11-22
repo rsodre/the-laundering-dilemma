@@ -2,14 +2,17 @@ import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
 import { handler } from "./syndicate";
 
+
+//---------------------------------------------------------
+// Daydreams agent setup
+//
 const appOptions = {
   payments: {
     facilitatorUrl: process.env.PAYMENTS_FACILITATOR_URL as `${string}://${string}`,
-    payTo: process.env.PAYMENTS_RECEIVABLE_ADDRESS as `0x${string}`,
+    payTo: '0x0', // this endpoint has no receivable wallet
     network: process.env.PAYMENTS_NETWORK as any,
   },
 };
-
 const { app, runtime, addEntrypoint } = createAgentApp(
   {
     name: process.env.AGENT_NAME as string,
@@ -19,6 +22,9 @@ const { app, runtime, addEntrypoint } = createAgentApp(
   typeof appOptions !== 'undefined' ? appOptions : {}
 );
 
+//
+// Daydreams endpoints
+//
 addEntrypoint({
   key: "launder",
   description: "Launder some cash",

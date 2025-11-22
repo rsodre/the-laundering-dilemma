@@ -1,16 +1,21 @@
-import { CdpClient } from "@coinbase/cdp-sdk";
-import { Address, erc20Abi, formatUnits } from 'viem'
+import { CdpClient, EvmServerAccount } from "@coinbase/cdp-sdk";
+import { Address, formatUnits } from 'viem'
 import { bigintEquals, formatCash } from './misc';
 
-//
-// based on:
-// https://docs.cdp.coinbase.com/data/token-balance/cdp-sdk#example
+//---------------------------------------------------------
+// Coinbase CDP SDK integration
 //
 // bun i @coinbase/cdp-sdk
 //
 
 const cdp = new CdpClient();
 const network = "base-sepolia";  // Base mainnet
+
+
+//---------------------------------------------------------
+// Get balance of an account
+// https://docs.cdp.coinbase.com/data/token-balance/cdp-sdk#example
+//
 
 // USDC Contract Addresses
 // https://developers.circle.com/stablecoins/usdc-contract-addresses
@@ -35,3 +40,19 @@ export const getBalance = async (account: Address) => {
     formatted_cash: formatCash(balance),
   }
 }
+
+
+//---------------------------------------------------------
+// Create server wallet
+//
+// https://docs.cdp.coinbase.com/server-wallets/v2/introduction/quickstart
+// https://docs.cdp.coinbase.com/server-wallets/v2/using-the-wallet-api/managing-accounts#evm-accounts
+//
+export const createAccount = async (name: string): Promise<Address> => {
+  const account: EvmServerAccount = await cdp.evm.getOrCreateAccount({
+    name,
+  });
+  console.log(`>>> [Wallet] for [${name}]:`, account.address);
+  return account.address;
+}
+

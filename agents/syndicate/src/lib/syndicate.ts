@@ -1,7 +1,20 @@
 import 'dotenv/config';
 import { ModelMessage, streamText } from 'ai';
-import { LaunderStrategy, LAUNDROMATS } from 'libs/src';
+import { LaunderStrategy, createAccount } from 'libs/src';
 
+//---------------------------------------------------------
+// Coinbase Server wallet setup
+//
+const SYNDICATE_NAME = process.env.SYNDICATE_NAME as string || 'SyndicateX';
+const dirty_account = await createAccount(`${SYNDICATE_NAME}-dirty`);
+const clean_account = await createAccount(`${SYNDICATE_NAME}-clean`);
+// console.log(`>>> [Dirty wallet] for [${SYNDICATE_NAME}]:`, dirty_account);
+// console.log(`>>> [Clean wallet] for [${SYNDICATE_NAME}]:`, clean_account);
+
+
+
+//---------------------------------------------------------
+// Vercel AI SDK
 //
 // based on:
 // https://ai-sdk.dev/docs/getting-started/nodejs
