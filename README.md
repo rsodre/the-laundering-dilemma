@@ -52,7 +52,9 @@ AI_GATEWAY_API_KEY=<...>
 
 * `/agents/request/.env`:
 ```
-PRIVATE_KEY=<payer_private_key>
+PRIVATE_KEY=<...>
+CDP_API_KEY_ID=<...>
+CDP_API_KEY_SECRET=<...>
 ```
 
 ## Development notes

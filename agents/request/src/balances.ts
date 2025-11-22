@@ -5,6 +5,7 @@ import {
 } from "x402-fetch";
 import { Signer } from 'x402/types';
 import { formatCash, getBalance } from "libs/src";
+import { Address } from "viem";
 
 config();
 
@@ -19,7 +20,7 @@ async function main(): Promise<void> {
   const balance_sender = await getBalance(signer_address);
   console.log(`[Sender] USDC Balance on base-sepolia:`, balance_sender);
 
-  const balance_receiver = await getBalance(process.env.PAYMENTS_RECEIVABLE_ADDRESS as string);
+  const balance_receiver = await getBalance(process.env.PAYMENTS_RECEIVABLE_ADDRESS as Address);
   console.log(`[Receiver] USDC Balance on base-sepolia:`, balance_receiver);
 }
 
