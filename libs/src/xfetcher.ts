@@ -11,12 +11,7 @@ import { getBalance } from "./cdp";
 
 config();
 
-const privateKey = process.env.PRIVATE_KEY as Hex | string;
-
-if (!privateKey) {
-  console.error("fetcher: Missing required environment variable: PRIVATE_KEY");
-  process.exit(1);
-}
+const PRIVATE_KEY = process.env.PRIVATE_KEY as Hex | string;
 
 /**
  * Demonstrates paying for a protected resource using x402-fetch.
@@ -26,8 +21,8 @@ if (!privateKey) {
  * - RESOURCE_SERVER_URL    Base URL of the agent
  * - ENDPOINT_PATH          Endpoint path (e.g. /entrypoints/echo/invoke)
  */
-export const xfetcher = async (url: string, input: any) => {
-  const signer = await createSigner("base-sepolia", privateKey!) as Signer;
+export const xfetcher = async (url: string, input: any, privateKey?: Hex | undefined) => {
+  const signer = await createSigner("base-sepolia", (privateKey ?? PRIVATE_KEY)!) as Signer;
   //@ts-ignore
   const signer_address = signer.account.address;
 

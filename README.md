@@ -1,10 +1,10 @@
-# the-laundering-dilemma
+# The Laundering Dilemma
 
 For ETHGlobal Buenos Aires 2025.
 
-By Roger Mataleone [@matalecode](https://x.com/matalecode)
+By Roger S. Mataleone [@matalecode](https://x.com/matalecode)
 
-## The Laundering Dilemma
+## An Agentic Social Experiment
 
 Based on The Prisoner's Dilemma
 
@@ -12,14 +12,14 @@ Based on The Prisoner's Dilemma
 
 ## Resources
 
-* Daydreams: [@lucid-agents](https://github.com/daydreamsai/lucid-agents)
+* Daydreams agents: [@lucid-agents](https://github.com/daydreamsai/lucid-agents)
 * Coinbase Developer Platform: [CPD](https://docs.cdp.coinbase.com/)
   * x402 facilitator
   * `x402-fetch` 
   * `@coinbase/x402` (via Daydreams)
   * Server wallets
   * CDP SDK (balances, transfers)
-* Pyth entropy
+* Pyth entropy (agent personalities)
 * Vercel [AI SDK](https://ai-sdk.dev/docs/introduction)
 
 
@@ -27,7 +27,7 @@ Based on The Prisoner's Dilemma
 
 * `/agents/laundromat`: Laundromat agent endpoints, accept payments in x402, where Syndicates launder their money.
 * `/agents/syndicate`: Single Syndicate agents. Multiple instances can be started, one for each active Syndicate.
-* `/agents/request`: Scripts for testing, create requests for agents, check balances, etc.
+* `/agents/request`: Scripts for testing, trigger agents, check balances, etc.
 * `/libs`: Misc functions used by all packages.
 
 
@@ -64,12 +64,35 @@ AI_GATEWAY_API_KEY=<...>
 
 * `/agents/request/.env`:
 ```sh
+# funded wallet for x402 test payments
 PRIVATE_KEY=<...>
 # Coinbase CDP setup
 CDP_API_KEY_ID=<...>
 CDP_API_KEY_SECRET=<...>
 CDP_WALLET_SECRET=<...>
 ```
+
+
+## Testing agents
+
+Terminal 1: Start **Laundromat** agent at [http://localhost:3000/](http://localhost:3000/)
+```sh
+$ cd agents/laundromat
+$ bun run dev
+```
+
+Terminal 2: Start **Syndicate** agent at [http://localhost:3100/](http://localhost:3100/)
+```sh
+$ cd agents/syndicate
+$ bun run dev
+```
+
+Terminal 3: Trigger **Syndicate** laundering...
+```sh
+$ cd agents/request
+$ bun run launder
+```
+
 
 ## Development notes
 

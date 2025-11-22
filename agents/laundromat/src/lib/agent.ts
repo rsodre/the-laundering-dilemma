@@ -36,8 +36,13 @@ addEntrypoint({
   key: LAUNDROMATS[Strategy.Conservative].endpoint,
   description: LAUNDROMATS[Strategy.Conservative].description,
   input: z.object({
+    boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Target account address."),
+    account: z.string().min(1, "Clean CASH account address."),
+  }),
+  output: z.object({
+    amount_clean: z.number().describe(`Laundered amount`),
+    amount_lost: z.number().describe(`Taxed/Lost amount`),
   }),
   price: _price(Strategy.Conservative),
   handler: async (ctx: any) => {
@@ -49,8 +54,13 @@ addEntrypoint({
   key: LAUNDROMATS[Strategy.Moderate].endpoint,
   description: LAUNDROMATS[Strategy.Moderate].description,
   input: z.object({
+    boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Target account address."),
+    account: z.string().min(1, "Clean CASH account address."),
+  }),
+  output: z.object({
+    amount_clean: z.number().describe(`Laundered amount`),
+    amount_lost: z.number().describe(`Taxed/Lost amount`),
   }),
   price: _price(Strategy.Moderate),
   handler: async (ctx: any) => {
@@ -62,8 +72,13 @@ addEntrypoint({
   key: LAUNDROMATS[Strategy.Aggressive].endpoint,
   description: LAUNDROMATS[Strategy.Aggressive].description,
   input: z.object({
+    boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Target account address."),
+    account: z.string().min(1, "Clean CASH account address."),
+  }),
+  output: z.object({
+    amount_clean: z.number().describe(`Laundered amount`),
+    amount_lost: z.number().describe(`Taxed/Lost amount`),
   }),
   price: _price(Strategy.Aggressive),
   handler: async (ctx: any) => {
@@ -75,8 +90,13 @@ addEntrypoint({
   key: LAUNDROMATS[Strategy.PlayNice].endpoint,
   description: LAUNDROMATS[Strategy.PlayNice].description,
   input: z.object({
+    boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Target account address."),
+    account: z.string().min(1, "Clean CASH account address."),
+  }),
+  output: z.object({
+    amount_clean: z.number().describe(`Laundered amount`),
+    amount_lost: z.number().describe(`Taxed/Lost amount`),
   }),
   price: _price(Strategy.PlayNice),
   handler: async (ctx: any) => {

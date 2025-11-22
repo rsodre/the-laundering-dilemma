@@ -10,11 +10,13 @@ export async function handler(strategy: Strategy, ctx: any) {
   const amount = Laundromat.amount;
   const tax = Laundromat.tax;
 
-  const amount_laundered = (amount - ((amount / 100) * tax));
+  const amount_tax = (amount / 100) * tax;
+  const amount_clean = (amount - amount_tax);
 
   return {
     output: {
-      amount_laundered,
+      amount_clean,
+      amount_lost: amount_tax,
     },
   };
 };

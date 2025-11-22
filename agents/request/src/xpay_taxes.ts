@@ -1,9 +1,10 @@
 import { config } from "dotenv";
 import { xfetcher } from "libs/src";
+import { LAUNDROMAT_BASE_URL } from "libs/src/constants";
 
 config();
 
-const baseURL = "http://localhost:3000";
+const baseURL = LAUNDROMAT_BASE_URL;
 const endpointPath = "/entrypoints/pay_taxes/invoke";
 
 async function main(): Promise<void> {

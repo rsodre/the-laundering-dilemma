@@ -44,6 +44,9 @@ addEntrypoint({
   }),
   output: z.object({
     strategy: z.enum([Strategy.Conservative, Strategy.Moderate, Strategy.Aggressive, Strategy.PlayNice]).describe(`Laundering strategy`),
+    amount_clean: z.number().describe(`Laundered amount`),
+    amount_lost: z.number().describe(`Taxed/Lost amount`),
+    success: z.boolean().describe(`Success flag`),
   }),
   handler: async (ctx: any) => {
     // console.log('Context >>>', ctx);
