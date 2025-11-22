@@ -1,10 +1,17 @@
 import 'dotenv/config';
 import { ModelMessage, streamText } from 'ai';
-import { createAccount, exportAccountKey, sleep, xfetcher } from 'libs/src';
-import { fundSyndicate, getBalance } from "libs/src/cdp";
+import { Address } from 'viem/accounts';
+import { sleep } from 'libs/src/misc';
+import {
+  fundSyndicate,
+  getBalance,
+  getServerAccount,
+  exportAccountKey,
+  xfetcher,
+} from 'libs/src';
 import {
   Strategy,
-  CYCLE_COUNT,
+  DAYS_COUNT,
   SYNDICATE_COUNT,
   AGGRESSIVE_AMOUNT,
   CONSERVATIVE_AMOUNT,
@@ -15,7 +22,6 @@ import {
   LAUNDROMAT_BASE_URL,
   LAUNDROMATS,
 } from "libs/src/constants";
-import { Address } from 'viem/accounts';
 
 //---------------------------------------------------------
 // Coinbase Server wallet setup
@@ -26,8 +32,8 @@ const CLEAN_ACCOUNT_NAME = `${SYNDICATE_NAME}-clean`;
 const BOSS_NAME = process.env.BOSS_NAME as string || SYNDICATE_NAME;
 //
 // create accounts
-const clean_account = await createAccount(CLEAN_ACCOUNT_NAME);
-const dirty_account = await createAccount(DIRTY_ACCOUNT_NAME);
+const clean_account = await getServerAccount(CLEAN_ACCOUNT_NAME);
+const dirty_account = await getServerAccount(DIRTY_ACCOUNT_NAME);
 //
 // export private keys...
 const dirty_private_key = await exportAccountKey(DIRTY_ACCOUNT_NAME) as Address;
@@ -77,7 +83,7 @@ Please take in consideration:
 * If more than ${LAUNDER_THRESHOLD} DIRTY CASH is laundered in a day, by all Syndicates, some Syndicates might be caught and go to jail!
 * There only one strategy is not enough to win the game, you need to balance your risk and reward.
 Conditions for winning the game:
-* The Syndicate who has more CLEAN CASH at the end of ${CYCLE_COUNT} days.
+* The Syndicate who has more CLEAN CASH at the end of ${DAYS_COUNT} days.
 * The Syndicate must launder all of its DIRTY CASH.
 * The Syndicate who is not in jail.
 

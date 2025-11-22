@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
 import { handler } from "./laundromat";
 import { LAUNDROMATS, Strategy } from "libs/src/constants";
+import { laundromat_input_schema, laundromat_output_schema } from "libs/src/types";
 
 
 
@@ -35,16 +36,8 @@ const _price = (strategy: Strategy) => (LAUNDROMATS[strategy].amount / 1000000).
 addEntrypoint({
   key: LAUNDROMATS[Strategy.Conservative].endpoint,
   description: LAUNDROMATS[Strategy.Conservative].description,
-  input: z.object({
-    boss_name: z.string().min(1, "The Syndicate boss name."),
-    name: z.string().min(1, "The Syndicate name."),
-    clean_account_name: z.string().min(1, "Clean CASH account address."),
-  }),
-  output: z.object({
-    amount_clean: z.number().describe(`Laundered amount`),
-    amount_lost: z.number().describe(`Taxed/Lost amount`),
-    busted: z.boolean().describe(`Busted flag`),
-  }),
+  input: laundromat_input_schema,
+  output: laundromat_output_schema,
   price: _price(Strategy.Conservative),
   handler: async (ctx: any) => {
     return await handler(Strategy.Conservative, ctx);
@@ -54,16 +47,8 @@ addEntrypoint({
 addEntrypoint({
   key: LAUNDROMATS[Strategy.Moderate].endpoint,
   description: LAUNDROMATS[Strategy.Moderate].description,
-  input: z.object({
-    boss_name: z.string().min(1, "The Syndicate boss name."),
-    name: z.string().min(1, "The Syndicate name."),
-    clean_account_name: z.string().min(1, "Clean CASH account address."),
-  }),
-  output: z.object({
-    amount_clean: z.number().describe(`Laundered amount`),
-    amount_lost: z.number().describe(`Taxed/Lost amount`),
-    busted: z.boolean().describe(`Busted flag`),
-  }),
+  input: laundromat_input_schema,
+  output: laundromat_output_schema,
   price: _price(Strategy.Moderate),
   handler: async (ctx: any) => {
     return await handler(Strategy.Moderate, ctx);
@@ -73,16 +58,8 @@ addEntrypoint({
 addEntrypoint({
   key: LAUNDROMATS[Strategy.Aggressive].endpoint,
   description: LAUNDROMATS[Strategy.Aggressive].description,
-  input: z.object({
-    boss_name: z.string().min(1, "The Syndicate boss name."),
-    name: z.string().min(1, "The Syndicate name."),
-    clean_account_name: z.string().min(1, "Clean CASH account address."),
-  }),
-  output: z.object({
-    amount_clean: z.number().describe(`Laundered amount`),
-    amount_lost: z.number().describe(`Taxed/Lost amount`),
-    busted: z.boolean().describe(`Busted flag`),
-  }),
+  input: laundromat_input_schema,
+  output: laundromat_output_schema,
   price: _price(Strategy.Aggressive),
   handler: async (ctx: any) => {
     return await handler(Strategy.Aggressive, ctx);
@@ -92,16 +69,8 @@ addEntrypoint({
 addEntrypoint({
   key: LAUNDROMATS[Strategy.PlayNice].endpoint,
   description: LAUNDROMATS[Strategy.PlayNice].description,
-  input: z.object({
-    boss_name: z.string().min(1, "The Syndicate boss name."),
-    name: z.string().min(1, "The Syndicate name."),
-    clean_account_name: z.string().min(1, "Clean CASH account address."),
-  }),
-  output: z.object({
-    amount_clean: z.number().describe(`Laundered amount`),
-    amount_lost: z.number().describe(`Taxed/Lost amount`),
-    busted: z.boolean().describe(`Busted flag`),
-  }),
+  input: laundromat_input_schema,
+  output: laundromat_output_schema,
   price: _price(Strategy.PlayNice),
   handler: async (ctx: any) => {
     return await handler(Strategy.PlayNice, ctx);

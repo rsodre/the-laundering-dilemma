@@ -15,3 +15,14 @@ export const bigintEquals = (a: BigNumberish, b: BigNumberish): boolean => {
   return BigInt(a) === BigInt(b);
 }
 
+
+export const shuffle = <T>(array: T[]): T[] => {
+  const source = [...array];
+  const result: T[] = [];
+  while (source.length > 0) {
+    const randomIndex = Math.floor(Math.random() * source.length);
+    const [item] = source.splice(randomIndex, 1);
+    result.push(item);
+  }
+  return result;
+}

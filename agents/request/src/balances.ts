@@ -1,23 +1,18 @@
 import { config } from "dotenv";
-import {
-  createSigner,
-  type Hex,
-} from "x402-fetch";
-import { Signer } from 'x402/types';
-import { createAccount, formatCash, getBalance, getFundedAccount } from "libs/src";
 import { Address } from "viem";
+import { getServerAccount, getBalance, getFundedAccount } from "libs/src";
 import { AUTHORITY_ACCOUNT_NAME } from "libs/src/constants";
 
 config();
 
-const privateKey = process.env.PRIVATE_KEY as Hex | string;
+const privateKey = process.env.PRIVATE_KEY as Address;
 
 async function main(): Promise<void> {
   const funded_account = await getFundedAccount(privateKey as Address);
   const balance_funded = await getBalance(funded_account.address);
   console.log(`[FUNDED_ACCOUNT] USDC Balance on base-sepolia:`, balance_funded);
 
-  const authority_account = await createAccount(AUTHORITY_ACCOUNT_NAME);
+  const authority_account = await getServerAccount(AUTHORITY_ACCOUNT_NAME);
   const balance_authority = await getBalance(authority_account.address);
   console.log(`[AUTHORITY_ACCOUNT] USDC Balance on base-sepolia:`, balance_authority);
 

@@ -9,11 +9,17 @@ By Roger S. Mataleone [@matalecode](https://x.com/matalecode)
 Based on The Prisoner's Dilemma
 
 
+
+
+
 Features:
 * `x402` for instant `USDC` payments from [Coinbase](https://cdp.coinbase.com/) / [@coinbasedev](https://x.com/coinbasedev)
 * Verifiable entropy from [Pyth](https://www.pyth.network/) / [@PythNetwork](https://x.com/PythNetwork)
 * `A2A` communication (agent to agent)
 * Demo on `base-sepolia`
+
+
+
 
 ## Resources
 
@@ -34,6 +40,7 @@ Features:
 * `/agents/laundromat`: Laundromat agent endpoints, accept payments in x402, where Syndicates launder their money.
 * `/agents/syndicate`: Single Syndicate agents. Multiple instances can be started, one for each active Syndicate.
 * `/agents/request`: Scripts for testing, trigger agents, check balances, etc.
+* `/sequencer`: Run the experiment in sequence.
 * `/libs`: Misc functions used by all packages.
 
 
@@ -69,7 +76,7 @@ CDP_WALLET_SECRET=<...>
 AI_GATEWAY_API_KEY=<...>
 ```
 
-* `/agents/request/.env`:
+* `/agents/request/.env` | `/sequencer/.env`:
 ```sh
 # funded wallet for x402 test payments
 PRIVATE_KEY=<...>

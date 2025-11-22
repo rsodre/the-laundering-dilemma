@@ -1,13 +1,13 @@
 import 'dotenv/config';
 import { AUTHORITY_ACCOUNT_NAME, FUNDED_ACCOUNT_NAME, LAUNDROMATS, Strategy } from "libs/src/constants";
-import { createAccount, getBalance, transferCash } from "libs/src/cdp";
+import { getServerAccount, getBalance, transferCash } from "libs/src";
 import { sleep } from 'bun';
 
 
 //---------------------------------------------------------
 // Coinbase Authority wallet with ZERO balance
 //
-const authority_account = await createAccount(AUTHORITY_ACCOUNT_NAME);
+const authority_account = await getServerAccount(AUTHORITY_ACCOUNT_NAME);
 
 //
 // fund wallet
@@ -41,7 +41,7 @@ export async function handler(strategy: Strategy, ctx: any) {
   // get busted status
   let amount_lost = 0;
   let amount_clean = 0;
-  let busted = true;
+  let busted = false;
 
   if (tax > 0) {
     amount_lost = (amount / 100) * tax;
@@ -51,6 +51,7 @@ export async function handler(strategy: Strategy, ctx: any) {
     //
     // TODO: Get busted flag...
     //
+    // busted = true;
 
     if (busted) {
       amount_lost = amount;

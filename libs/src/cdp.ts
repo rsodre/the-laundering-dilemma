@@ -24,7 +24,7 @@ const USDC_ADDRESS_SEPOLIA = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
 // https://docs.cdp.coinbase.com/server-wallets/v2/introduction/quickstart
 // https://docs.cdp.coinbase.com/server-wallets/v2/using-the-wallet-api/managing-accounts#evm-accounts
 //
-export const createAccount = async (accountName: string): Promise<EvmServerAccount> => {
+export const getServerAccount = async (accountName: string): Promise<EvmServerAccount> => {
   const account: EvmServerAccount = await cdp.evm.getOrCreateAccount({
     name: accountName,
   });
@@ -63,9 +63,9 @@ export const getFundedAccount = async (privateKey: Address) => {
 // https://docs.cdp.coinbase.com/data/token-balance/cdp-sdk#example
 //
 
-export const getBalance = async (account: Address) => {
+export const getBalance = async (address: Address) => {
   const result = await cdp.evm.listTokenBalances({
-    address: account,
+    address,
     network: NETWORK,
   });
 
@@ -74,8 +74,14 @@ export const getBalance = async (account: Address) => {
     result?.balances
       .find(b => bigintEquals(b.token.contractAddress, USDC_ADDRESS_SEPOLIA))?.amount.amount ?? 0n;
 
+  let name: string | undefined;
+  try {
+    name = (await cdp.evm.getAccount({ address })).name;
+  } catch (error) {}
+
   return {
-    account,
+    name,
+    address,
     balance,
     formatted: formatUnits(balance, 6),
     formatted_cash: formatCash(balance),

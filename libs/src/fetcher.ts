@@ -2,7 +2,7 @@ import { config } from "dotenv";
 
 config();
 
-export const fetcher = async (url: string, input: any) => {
+export const fetcher = async (url: string, input: any, debug?: boolean) => {
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -14,7 +14,9 @@ export const fetcher = async (url: string, input: any) => {
   }
 
   const body = await response.json();
-  console.log(`body >>>`, body);
+  if (debug) {
+    console.log(`body >>>`, body);
+  }
 
   return body.output;
 }

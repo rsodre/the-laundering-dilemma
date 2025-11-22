@@ -1,30 +1,37 @@
 procs:
-  contracts:
-    cwd: agents/laundromat
-    shell: |
-      echo "waiting for syndicates to start..."
-      wait-port 3101
-      wait-port 3102
-      wait-port 3103
-      bun run dev
   Syndicate1:
     cwd: agents/syndicate
     shell: |
       export PORT=3101
       export SYNDICATE_NAME=Syndicate1
-      export BOSS_NAME=Dirty Tony
+      export BOSS_NAME="Dirty Tony"
       bun run dev
   Syndicate2:
     cwd: agents/syndicate
     shell: |
       export PORT=3102
       export SYNDICATE_NAME=Syndicate2
-      export BOSS_NAME=Sleazy Mykie
+      export BOSS_NAME="Sleazy Mykie"
       bun run dev
   Syndicate3:
     cwd: agents/syndicate
     shell: |
       export PORT=3103
       export SYNDICATE_NAME=Syndicate3
-      export BOSS_NAME=Slippery Squiddy
+      export BOSS_NAME="Slippery Squiddy"
       bun run dev
+  laundromat:
+    cwd: agents/laundromat
+    shell: |
+      echo "waiting for syndicates to start..."
+      wait-port 3101
+      wait-port 3102
+      wait-port 3103
+      # run laundromat in default port 3000
+      bun run dev
+  sequencer:
+    cwd: sequencer
+    shell: |
+      echo "waiting for laundromat to start..."
+      wait-port 3000
+      bun run start

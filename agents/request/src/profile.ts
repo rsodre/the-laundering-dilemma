@@ -10,9 +10,9 @@ async function main(): Promise<void> {
   const url = `${baseURL!}${endpointPath!}`;
   console.log(`url: [${url}]`);
 
-  const output = await fetcher(url, {
-    input: {}
-  });
+  const input = {};
+
+  const output = await fetcher(url, { input }, true);
   console.log(`output >>>`, output);
 }
 
