@@ -4,19 +4,16 @@ import { fetcher } from "libs/src";
 config();
 
 const baseURL = "http://localhost:3100";
-const endpointPath = "/entrypoints/launder/invoke";
+const endpointPath = "/entrypoints/profile/invoke";
 
 async function main(): Promise<void> {
   const url = `${baseURL!}${endpointPath!}`;
   console.log(`url: [${url}]`);
 
   const output = await fetcher(url, {
-    input: {
-      // abstract: "Everything is calm, no activity during the past day."
-      // abstract: "The police is in high alert."
-      abstract: "The police is in high alert. Every Syndicate member is being arrested!!! Do not launder any cash!"
-    }
+    input: {}
   });
+  console.log(`output >>>`, output);
 }
 
 main().catch((error) => {

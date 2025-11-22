@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { ModelMessage, streamText } from 'ai';
 import { createAccount, exportAccountKey, sleep, xfetcher } from 'libs/src';
-import { fundWallet, getBalance } from "libs/src/cdp";
+import { fundSyndicate, getBalance } from "libs/src/cdp";
 import {
   Strategy,
   CYCLE_COUNT,
@@ -23,7 +23,7 @@ import { Address } from 'viem/accounts';
 const SYNDICATE_NAME = process.env.SYNDICATE_NAME as string || 'SyndicateX';
 const DIRTY_ACCOUNT_NAME = `${SYNDICATE_NAME}-dirty`;
 const CLEAN_ACCOUNT_NAME = `${SYNDICATE_NAME}-clean`;
-const BOSS_NAME = SYNDICATE_NAME;
+const BOSS_NAME = process.env.BOSS_NAME as string || SYNDICATE_NAME;
 //
 // create accounts
 const clean_account = await createAccount(CLEAN_ACCOUNT_NAME);
@@ -39,7 +39,7 @@ console.log(`[${DIRTY_ACCOUNT_NAME}] balance:`, balance.formatted_cash);
 const amount_to_fund = BigInt(STARTING_DIRTY_CASH) - balance.balance;
 if (amount_to_fund > 0n) {
   console.log(`[${DIRTY_ACCOUNT_NAME}] funding wallet with:`, amount_to_fund);
-  await fundWallet(process.env.PRIVATE_KEY! as Address, dirty_account, amount_to_fund);
+  await fundSyndicate(process.env.PRIVATE_KEY! as Address, dirty_account, amount_to_fund);
   console.log(`[${DIRTY_ACCOUNT_NAME}] waiting for confirmation...`);
   await sleep(5000);
   const balance = await getBalance(dirty_account.address);
@@ -105,7 +105,14 @@ messages.push({
   content: PROMPT,
 });
 
-export async function handler(ctx: any) {
+
+
+//---------------------------------------------------------
+// Daydreams handler
+//
+let _busted = false;
+
+export async function launder_handler(ctx: any) {
   const abstract = String(ctx.input?.abstract ?? '').trim();
   console.log('Abstract >>>', abstract);
   // update prompt...
@@ -143,6 +150,7 @@ export async function handler(ctx: any) {
   let success = false;
   let amount_clean = 0;
   let amount_lost = 0;
+  let busted = false;
   try {
     const endpointPath = `/entrypoints/${LAUNDROMATS[strategy].endpoint}/invoke`;
     const url = `${LAUNDROMAT_BASE_URL}${endpointPath!}`;
@@ -151,18 +159,25 @@ export async function handler(ctx: any) {
       input: {
         boss_name: BOSS_NAME,
         name: SYNDICATE_NAME,
-        account: clean_account.address
+        clean_account_name: CLEAN_ACCOUNT_NAME,
       },
     }, dirty_private_key);
     amount_clean = Number(output?.amount_clean ?? 0);
     amount_lost = Number(output?.amount_lost ?? 0);
+    busted = Boolean(output?.busted ?? false);
+    if (busted) {
+      _busted = true;
+    }
     success = true;
   } catch (error) {
     console.error('Error laundering >>>', error);
   }
 
   // update messages...
-  fullResponse += `, cleaned amount: [${amount_clean}], lost/taxed amount: [${amount_lost}], success: [${success}]`;
+  fullResponse += `, cleaned amount: [${amount_clean}]`;
+  fullResponse += `, lost/taxed amount: [${amount_lost}]`;
+  fullResponse += `, busted: [${busted}]`;
+  fullResponse += `, success: [${success}]`;
   messages.push({ role: 'assistant', content: fullResponse });
   console.log(`>>> ${fullResponse}`);
 
@@ -171,7 +186,22 @@ export async function handler(ctx: any) {
       strategy,
       amount_clean,
       amount_lost,
+      busted,
       success,
+    },
+  };
+};
+
+export async function profile_handler(ctx: any) {
+  return {
+    output: {
+      boss_name: BOSS_NAME,
+      syndicate_name: SYNDICATE_NAME,
+      dirty_wallet_name: DIRTY_ACCOUNT_NAME,
+      clean_wallet_name: CLEAN_ACCOUNT_NAME,
+      dirty_wallet_address: dirty_account.address,
+      clean_wallet_address: clean_account.address,
+      busted: _busted,
     },
   };
 };

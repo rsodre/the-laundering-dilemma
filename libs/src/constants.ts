@@ -8,6 +8,8 @@ export const SYNDICATE_COUNT = 5;
 export const STARTING_DIRTY_CASH = 100_000;
 export const LAUNDER_THRESHOLD = 45_000;
 export const LAUNDROMAT_BASE_URL = 'http://localhost:3000';
+export const FUNDED_ACCOUNT_NAME = "FundedAccount";
+export const AUTHORITY_ACCOUNT_NAME = "AuthorityAccount";
 
 // laundering amounts
 export const CONSERVATIVE_AMOUNT = 5_000;

@@ -1,6 +1,7 @@
 import { CdpClient, EvmServerAccount } from "@coinbase/cdp-sdk";
 import { Address, formatUnits } from 'viem'
 import { bigintEquals, formatCash } from './misc';
+import { FUNDED_ACCOUNT_NAME } from "./constants";
 
 //---------------------------------------------------------
 // Coinbase CDP SDK integration
@@ -38,6 +39,23 @@ export const exportAccountKey = async (accountName: string): Promise<string> => 
   return `0x${privateKey}`;
 }
 
+//
+// this is an imported funded wallet used for all funding needs
+export const getFundedAccount = async (privateKey: Address) => {
+  let account: EvmServerAccount;
+  try {
+    account = await cdp.evm.importAccount({
+      privateKey,
+      name: FUNDED_ACCOUNT_NAME,
+    });
+  } catch (error) {
+    account = await cdp.evm.getOrCreateAccount({
+      name: FUNDED_ACCOUNT_NAME,
+    });
+  }
+  return account;
+}
+
 
 
 //---------------------------------------------------------
@@ -69,20 +87,24 @@ export const getBalance = async (account: Address) => {
 // Fund account with USDC
 // https://docs.cdp.coinbase.com/data/token-balance/cdp-sdk#example
 //
-const FUNDED_ACCOUNT_NAME = "FundedAccount";
-export const fundWallet = async (privateKey: Address, receiver: EvmServerAccount, amount: bigint) => {
-  let sender: EvmServerAccount;
-  try {
-    sender = await cdp.evm.importAccount({
-      privateKey,
-      name: FUNDED_ACCOUNT_NAME,
-    });
-  } catch (error) {
-    sender = await cdp.evm.getOrCreateAccount({
-      name: FUNDED_ACCOUNT_NAME,
-    });
-  }
+export const fundSyndicate = async (privateKey: Address, receiver: EvmServerAccount, amount: bigint) => {
+  const sender = await getFundedAccount(privateKey);
   console.log(`>>> [Funded Account] balance:`, await getBalance(sender.address));
+  await sender.transfer({
+    to: receiver,
+    amount,
+    token: USDC_ADDRESS_SEPOLIA,
+    network: NETWORK,
+  })
+}
+
+export const transferCash = async (senderName: string, receiverName: string, amount: bigint) => {
+  const sender = await cdp.evm.getOrCreateAccount({
+    name: senderName,
+  });
+  const receiver = await cdp.evm.getOrCreateAccount({
+    name: receiverName,
+  });
   await sender.transfer({
     to: receiver,
     amount,

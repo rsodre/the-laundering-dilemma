@@ -56,6 +56,7 @@ AI_GATEWAY_API_KEY=<...>
 ```sh
 # syndicate name, linked to Server Wallet
 SYNDICATE_NAME=Syndicate1
+BOSS_NAME=Dirty Tony
 # x402 setup
 PAYMENTS_FACILITATOR_URL=https://x402.org/facilitator
 PAYMENTS_NETWORK=base-sepolia

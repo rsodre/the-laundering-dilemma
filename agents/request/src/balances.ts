@@ -4,21 +4,22 @@ import {
   type Hex,
 } from "x402-fetch";
 import { Signer } from 'x402/types';
-import { formatCash, getBalance } from "libs/src";
+import { createAccount, formatCash, getBalance, getFundedAccount } from "libs/src";
 import { Address } from "viem";
+import { AUTHORITY_ACCOUNT_NAME } from "libs/src/constants";
 
 config();
 
 const privateKey = process.env.PRIVATE_KEY as Hex | string;
 
 async function main(): Promise<void> {
-  // const signer = await createSigner("solana-devnet", privateKey); // uncomment for Solana
-  const signer = await createSigner("base-sepolia", privateKey) as Signer;
-  //@ts-ignore
-  const signer_address = signer.account.address;
+  const funded_account = await getFundedAccount(privateKey as Address);
+  const balance_funded = await getBalance(funded_account.address);
+  console.log(`[FUNDED_ACCOUNT] USDC Balance on base-sepolia:`, balance_funded);
 
-  const balance_sender = await getBalance(signer_address);
-  console.log(`[Sender] USDC Balance on base-sepolia:`, balance_sender);
+  const authority_account = await createAccount(AUTHORITY_ACCOUNT_NAME);
+  const balance_authority = await getBalance(authority_account.address);
+  console.log(`[AUTHORITY_ACCOUNT] USDC Balance on base-sepolia:`, balance_authority);
 
   const balance_receiver = await getBalance(process.env.PAYMENTS_RECEIVABLE_ADDRESS as Address);
   console.log(`[Receiver] USDC Balance on base-sepolia:`, balance_receiver);

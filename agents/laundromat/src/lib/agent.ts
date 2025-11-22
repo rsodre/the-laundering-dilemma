@@ -38,11 +38,12 @@ addEntrypoint({
   input: z.object({
     boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Clean CASH account address."),
+    clean_account_name: z.string().min(1, "Clean CASH account address."),
   }),
   output: z.object({
     amount_clean: z.number().describe(`Laundered amount`),
     amount_lost: z.number().describe(`Taxed/Lost amount`),
+    busted: z.boolean().describe(`Busted flag`),
   }),
   price: _price(Strategy.Conservative),
   handler: async (ctx: any) => {
@@ -56,11 +57,12 @@ addEntrypoint({
   input: z.object({
     boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Clean CASH account address."),
+    clean_account_name: z.string().min(1, "Clean CASH account address."),
   }),
   output: z.object({
     amount_clean: z.number().describe(`Laundered amount`),
     amount_lost: z.number().describe(`Taxed/Lost amount`),
+    busted: z.boolean().describe(`Busted flag`),
   }),
   price: _price(Strategy.Moderate),
   handler: async (ctx: any) => {
@@ -74,11 +76,12 @@ addEntrypoint({
   input: z.object({
     boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Clean CASH account address."),
+    clean_account_name: z.string().min(1, "Clean CASH account address."),
   }),
   output: z.object({
     amount_clean: z.number().describe(`Laundered amount`),
     amount_lost: z.number().describe(`Taxed/Lost amount`),
+    busted: z.boolean().describe(`Busted flag`),
   }),
   price: _price(Strategy.Aggressive),
   handler: async (ctx: any) => {
@@ -92,11 +95,12 @@ addEntrypoint({
   input: z.object({
     boss_name: z.string().min(1, "The Syndicate boss name."),
     name: z.string().min(1, "The Syndicate name."),
-    account: z.string().min(1, "Clean CASH account address."),
+    clean_account_name: z.string().min(1, "Clean CASH account address."),
   }),
   output: z.object({
     amount_clean: z.number().describe(`Laundered amount`),
     amount_lost: z.number().describe(`Taxed/Lost amount`),
+    busted: z.boolean().describe(`Busted flag`),
   }),
   price: _price(Strategy.PlayNice),
   handler: async (ctx: any) => {

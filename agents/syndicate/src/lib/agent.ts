@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
-import { handler } from "./syndicate";
 import { Strategy } from "libs/src/constants";
+import { launder_handler, profile_handler } from "./syndicate";
 
 
 //---------------------------------------------------------
@@ -26,15 +26,24 @@ const { app, runtime, addEntrypoint } = createAgentApp(
 //
 // Daydreams endpoints
 //
-// addEntrypoint({
-//   key: "profile",
-//   description: "Get this Syndicate profile information",
-//   input: z.object({}),
-//   handler: async (ctx: any) => {
-//     // console.log('Context >>>', ctx);
-//     return await handler(ctx);
-//   },
-// });
+addEntrypoint({
+  key: "profile",
+  description: "Get this Syndicate profile information",
+  input: z.object({}),
+  output: z.object({
+    boss_name: z.string().describe(`Boss name`),
+    syndicate_name: z.string().describe(`Syndicate name`),
+    dirty_wallet_name: z.string().describe(`Dirty wallet name`),
+    clean_wallet_name: z.string().describe(`Clean wallet name`),
+    dirty_wallet_address: z.string().describe(`Dirty wallet address`),
+    clean_wallet_address: z.string().describe(`Clean wallet address`),
+    busted: z.boolean().describe(`Busted flag`),
+  }),
+  handler: async (ctx: any) => {
+    // console.log('Context >>>', ctx);
+    return await profile_handler(ctx);
+  },
+});
 
 addEntrypoint({
   key: "launder",
@@ -46,11 +55,12 @@ addEntrypoint({
     strategy: z.enum([Strategy.Conservative, Strategy.Moderate, Strategy.Aggressive, Strategy.PlayNice]).describe(`Laundering strategy`),
     amount_clean: z.number().describe(`Laundered amount`),
     amount_lost: z.number().describe(`Taxed/Lost amount`),
+    busted: z.boolean().describe(`Busted flag`),
     success: z.boolean().describe(`Success flag`),
   }),
   handler: async (ctx: any) => {
     // console.log('Context >>>', ctx);
-    return await handler(ctx);
+    return await launder_handler(ctx);
   },
 });
 
