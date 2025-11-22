@@ -5,6 +5,11 @@
     "agents/*",
     "libs"
   ],
+  "scripts": {
+    "experiment": "mprocs --config ./mprocs.experiment.yaml"
+  },
   "devDependencies": {
+    "mprocs": "^0.7.3",
+    "wait-port": "^1.1.0"
   }
 }

@@ -26,6 +26,7 @@ Features:
   * CDP SDK (balances, transfers)
 * Pyth [Pyth](https://www.pyth.network/) (agent personalities)
 * Vercel [AI SDK](https://ai-sdk.dev/docs/introduction)
+* [mprocs](https://github.com/pvolok/mprocs) to run all agents in parallel
 
 
 ## Project Structure
@@ -76,6 +77,16 @@ PRIVATE_KEY=<...>
 CDP_API_KEY_ID=<...>
 CDP_API_KEY_SECRET=<...>
 CDP_WALLET_SECRET=<...>
+```
+
+
+## Start the experiment
+
+I used `mprocs` to run all agents at the same time...
+
+```sh
+$ cd ./
+$ bun run experiment
 ```
 
 
