@@ -87,9 +87,16 @@ Conditions for winning the game:
 * The Syndicate who has more CLEAN CASH at the end of ${DAYS_COUNT} days.
 * The Syndicate must launder all of its DIRTY CASH.
 * The Syndicate who is not in jail.
+* Syndicates that do not launder all their money in ${DAYS_COUNT} days, will lose!!!
+* Keep track of your amount laundered, and how many days you have left to launder all your money.
 
 ## Input
 Abstract: (A string field) contais the news about the previous day laundering operations from all syndicates.
+Result of your daily laundering operations: a stringfied json string including:
+* strategy: the strategy chosen
+* amount_clean: the amount of money laundered
+* amount_lost: the amount of money lost
+* busted: true if that Syndicate was busted!
 
 ## Output
 (one of the following values): ${Strategy.Conservative}, ${Strategy.Moderate}, ${Strategy.Aggressive}, ${Strategy.PlayNice}
@@ -125,7 +132,7 @@ export async function launder_handler(ctx: any) {
   // update prompt...
   messages.push({
     role: 'user',
-    content: `## This is the last day Abstract:` + abstract,
+    content: `## Give me your next strategy based on the following last day Abstract:` + abstract,
   });
 
   let strategy: Strategy = Strategy.PlayNice;
@@ -149,8 +156,8 @@ export async function launder_handler(ctx: any) {
   } catch (error) {
     console.error('Error requesting strategy >>>', error);
   }
-  let fullResponse = `Chosen strategy: [${strategy}]`;
-  console.log(`>>> ${fullResponse}`);
+  messages.push({ role: 'assistant', content: strategy });
+  console.log(`>>> Chosen strategy: [${strategy}]`);
 
   //
   // Launder...
@@ -181,12 +188,15 @@ export async function launder_handler(ctx: any) {
   }
 
   // update messages...
-  fullResponse += `, cleaned amount: [${amount_clean}]`;
-  fullResponse += `, lost/taxed amount: [${amount_lost}]`;
-  fullResponse += `, busted: [${busted}]`;
-  fullResponse += `, success: [${success}]`;
-  messages.push({ role: 'assistant', content: fullResponse });
-  console.log(`>>> ${fullResponse}`);
+  let fullResponse = `## This is our operation summary for today:`;
+  fullResponse += JSON.stringify({
+    strategy,
+    amount_clean,
+    amount_lost,
+    busted,
+  });
+  messages.push({ role: 'user', content: fullResponse });
+  console.log(`>>> Operation summary:`, fullResponse);
 
   return {
     output: {

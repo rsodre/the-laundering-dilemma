@@ -1,8 +1,14 @@
 import { config } from "dotenv";
 import { SyndicateType } from ".";
-import { SyndicateLaunderInputType, SyndicateLaunderOutputType, SyndicateProfileOutputType } from "libs/src/types";
+import { LaundromatAbstractOutputType, SyndicateLaunderInputType, SyndicateLaunderOutputType, SyndicateProfileOutputType } from "libs/src/types";
 import { fetcher } from "libs/src/fetcher";
 config();
+
+export const getLaundromatAbstract = async (url: string): Promise<string> => {
+  const input = {};
+  const response = await fetcher(url, { input }, false) as LaundromatAbstractOutputType;
+  return response.abstract;
+}
 
 export const getSyndicateProfile = async (syndicate: SyndicateType): Promise<SyndicateProfileOutputType> => {
   const input = {};

@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import { SYNDICATE_COUNT, DAYS_COUNT, AUTHORITY_ACCOUNT_NAME } from "libs/src/constants";
-import { getSyndicateLaunder, getSyndicateProfile } from "./lib";
+import { getLaundromatAbstract, getSyndicateLaunder, getSyndicateProfile } from "./lib";
 import { shuffle, sleep } from "libs/src/misc";
 import { getServerAccount, getBalance } from "libs/src";
 import { Address } from "viem";
@@ -31,7 +31,9 @@ async function main(): Promise<void> {
     console.log(`-------- Starting Day [${dayNumber}]...`);
 
     // TODO: get the abstract from the previous day
-    const abstract = `Everything is calm, no activity during the past day.`;
+    const abstract_endpoint = `http://localhost:3000/entrypoints/abstract/invoke`;
+    const abstract = await getLaundromatAbstract(abstract_endpoint);
+    console.log(`-------- Abstract:`, abstract);
 
     //
     // Syndicates loop
@@ -50,7 +52,7 @@ async function main(): Promise<void> {
       console.log(`[${syndicate.name}] launder result:`, launder);
 
       // wait a bit...
-      await sleep(1000);
+      // await sleep(1000);
     }
   }
 
