@@ -1,0 +1,21 @@
+import { config } from "dotenv";
+import { fetcher } from "libs/src";
+
+config();
+
+const baseURL = "http://localhost:3000";
+const endpointPath = "/entrypoints/abstract/invoke";
+
+async function main(): Promise<void> {
+  const url = `${baseURL!}${endpointPath!}`;
+  console.log(`url: [${url}]`);
+
+  const input = {};
+
+  const output = await fetcher(url, { input }, true);
+}
+
+main().catch((error) => {
+  console.error(error?.response?.data?.error ?? error);
+  process.exit(1);
+});

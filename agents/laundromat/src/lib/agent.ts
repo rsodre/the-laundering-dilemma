@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
-import { handler } from "./laundromat";
+import { abstract_handler, laundromat_handler } from "./laundromat";
 import { LAUNDROMATS, Strategy } from "libs/src/constants";
-import { laundromat_input_schema, laundromat_output_schema } from "libs/src/types";
+import { laundromat_input_schema, laundromat_output_schema, laundromat_abstract_output_schema } from "libs/src/types";
 
 
 
@@ -40,7 +40,7 @@ addEntrypoint({
   output: laundromat_output_schema,
   price: _price(Strategy.Conservative),
   handler: async (ctx: any) => {
-    return await handler(Strategy.Conservative, ctx);
+    return await laundromat_handler(Strategy.Conservative, ctx);
   },
 });
 
@@ -51,7 +51,7 @@ addEntrypoint({
   output: laundromat_output_schema,
   price: _price(Strategy.Moderate),
   handler: async (ctx: any) => {
-    return await handler(Strategy.Moderate, ctx);
+    return await laundromat_handler(Strategy.Moderate, ctx);
   },
 });
 
@@ -62,7 +62,7 @@ addEntrypoint({
   output: laundromat_output_schema,
   price: _price(Strategy.Aggressive),
   handler: async (ctx: any) => {
-    return await handler(Strategy.Aggressive, ctx);
+    return await laundromat_handler(Strategy.Aggressive, ctx);
   },
 });
 
@@ -73,7 +73,21 @@ addEntrypoint({
   output: laundromat_output_schema,
   price: _price(Strategy.PlayNice),
   handler: async (ctx: any) => {
-    return await handler(Strategy.PlayNice, ctx);
+    return await laundromat_handler(Strategy.PlayNice, ctx);
+  },
+});
+
+//
+// laundromat daily abstract
+//
+addEntrypoint({
+  key: "abstract",
+  description: "Called when it's time to provide a summary of the past day activities",
+  input: z.object({}),
+  output: laundromat_abstract_output_schema,
+  handler: async (ctx: any) => {
+    console.log('Context >>>', ctx);
+    return await abstract_handler(ctx);
   },
 });
 

@@ -23,6 +23,7 @@ import {
   LAUNDROMATS,
 } from "libs/src/constants";
 
+
 //---------------------------------------------------------
 // Coinbase Server wallet setup
 //
@@ -70,7 +71,7 @@ Your task is to generate new fields: Strategy.
 
 ## Context
 This is a gamified version of the classic Prisoner's Dilemma, running by several autonomous agents.
-You are oen of those angents and you run a criminal organization that needs to launder money.
+You are one of those agents that run a criminal organization that needs to launder money.
 You start with ${STARTING_DIRTY_CASH} of DIRTY CASH to launder, and turn it into CLEAN CASH.
 There are ${SYNDICATE_COUNT} Syndicates doing the same laundering, and the sum of all launderings is accounted by authorities.
 Every day, you have to make a strategical decision of how much DIRTY CASH to launder.
@@ -80,7 +81,7 @@ The only available strategies are:
 * ${Strategy.Aggressive}: Launder with high risk (${AGGRESSIVE_AMOUNT})
 * ${Strategy.PlayNice}: Pay 40% taxes over ${PAY_TAXES_AMOUNT}, always clean.
 Please take in consideration:
-* If more than ${LAUNDER_THRESHOLD} DIRTY CASH is laundered in a day, by all Syndicates, some Syndicates might be caught and go to jail!
+* If the amount of DIRTY CASH laundered by all Syndicates in a day reacheds the threshold of ${LAUNDER_THRESHOLD}, the Syndicate laundering will be caught and go to jail!
 * There only one strategy is not enough to win the game, you need to balance your risk and reward.
 Conditions for winning the game:
 * The Syndicate who has more CLEAN CASH at the end of ${DAYS_COUNT} days.

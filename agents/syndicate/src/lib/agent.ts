@@ -2,7 +2,6 @@ import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
 import { launder_handler, profile_handler } from "./syndicate";
 import {
-  laundromat_input_schema,
   syndicate_launder_input_schema,
   syndicate_launder_output_schema,
   syndicate_profile_output_schema,

@@ -11,6 +11,7 @@
     "xpay_taxes": "bun run src/xpay_taxes.ts",
     "profile": "bun run src/profile.ts",
     "launder": "bun run src/launder.ts",
+    "abstract": "bun run src/abstract.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

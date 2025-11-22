@@ -21,6 +21,11 @@ export const laundromat_output_schema = z.object({
 });
 export type LaundromatOutputType = z.infer<typeof laundromat_output_schema>;
 
+export const laundromat_abstract_output_schema = z.object({
+  abstract: z.string().min(1, "Past day activities abstract."),
+});
+export type LaundromatAbstractOutputType = z.infer<typeof laundromat_abstract_output_schema>;
+
 //---------------------------------------------------------
 // Syndicate schemas
 //
