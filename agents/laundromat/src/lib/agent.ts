@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
 import { handler } from "./laundromat";
-import { LaunderStrategy, LAUNDROMATS } from "libs/src";
+import { LAUNDROMATS, Strategy } from "libs/src/constants";
 
 
 
@@ -18,9 +18,9 @@ const appOptions = {
 
 const { app, runtime, addEntrypoint } = createAgentApp(
   {
-    name: process.env.AGENT_NAME as string,
+    name: 'laundromat-agent', //process.env.AGENT_NAME as string,
+    description: 'Laundromat agent', //process.env.AGENT_DESCRIPTION as string,
     version: process.env.AGENT_VERSION as string,
-    description: process.env.AGENT_DESCRIPTION as string,
   },
   typeof appOptions !== 'undefined' ? appOptions : {}
 );
@@ -30,57 +30,57 @@ const { app, runtime, addEntrypoint } = createAgentApp(
 // Daydreams endpoints
 //
 
-const _price = (strategy: LaunderStrategy) => (LAUNDROMATS[strategy].amount / 1000000).toFixed(6);
+const _price = (strategy: Strategy) => (LAUNDROMATS[strategy].amount / 1000000).toFixed(6);
 
 addEntrypoint({
-  key: LAUNDROMATS[LaunderStrategy.Conservative].endpoint,
-  description: LAUNDROMATS[LaunderStrategy.Conservative].description,
+  key: LAUNDROMATS[Strategy.Conservative].endpoint,
+  description: LAUNDROMATS[Strategy.Conservative].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(LaunderStrategy.Conservative),
+  price: _price(Strategy.Conservative),
   handler: async (ctx: any) => {
-    return await handler(LaunderStrategy.Conservative, ctx);
+    return await handler(Strategy.Conservative, ctx);
   },
 });
 
 addEntrypoint({
-  key: LAUNDROMATS[LaunderStrategy.Moderate].endpoint,
-  description: LAUNDROMATS[LaunderStrategy.Moderate].description,
+  key: LAUNDROMATS[Strategy.Moderate].endpoint,
+  description: LAUNDROMATS[Strategy.Moderate].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(LaunderStrategy.Moderate),
+  price: _price(Strategy.Moderate),
   handler: async (ctx: any) => {
-    return await handler(LaunderStrategy.Moderate, ctx);
+    return await handler(Strategy.Moderate, ctx);
   },
 });
 
 addEntrypoint({
-  key: LAUNDROMATS[LaunderStrategy.Aggressive].endpoint,
-  description: LAUNDROMATS[LaunderStrategy.Aggressive].description,
+  key: LAUNDROMATS[Strategy.Aggressive].endpoint,
+  description: LAUNDROMATS[Strategy.Aggressive].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(LaunderStrategy.Aggressive),
+  price: _price(Strategy.Aggressive),
   handler: async (ctx: any) => {
-    return await handler(LaunderStrategy.Aggressive, ctx);
+    return await handler(Strategy.Aggressive, ctx);
   },
 });
 
 addEntrypoint({
-  key: LAUNDROMATS[LaunderStrategy.PayTaxes].endpoint,
-  description: LAUNDROMATS[LaunderStrategy.PayTaxes].description,
+  key: LAUNDROMATS[Strategy.PayTaxes].endpoint,
+  description: LAUNDROMATS[Strategy.PayTaxes].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(LaunderStrategy.PayTaxes),
+  price: _price(Strategy.PayTaxes),
   handler: async (ctx: any) => {
-    return await handler(LaunderStrategy.PayTaxes, ctx);
+    return await handler(Strategy.PayTaxes, ctx);
   },
 });
 

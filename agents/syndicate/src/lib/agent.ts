@@ -9,15 +9,15 @@ import { handler } from "./syndicate";
 const appOptions = {
   payments: {
     facilitatorUrl: process.env.PAYMENTS_FACILITATOR_URL as `${string}://${string}`,
-    payTo: '0x0', // this endpoint has no receivable wallet
     network: process.env.PAYMENTS_NETWORK as any,
+    payTo: '0x0', // this endpoint has no receivable wallet
   },
 };
 const { app, runtime, addEntrypoint } = createAgentApp(
   {
-    name: process.env.AGENT_NAME as string,
+    name: 'syndicate-agent', //process.env.AGENT_NAME as string,
+    description: 'Syndicate agent', //process.env.AGENT_DESCRIPTION as string,
     version: process.env.AGENT_VERSION as string,
-    description: process.env.AGENT_DESCRIPTION as string,
   },
   typeof appOptions !== 'undefined' ? appOptions : {}
 );
@@ -27,9 +27,9 @@ const { app, runtime, addEntrypoint } = createAgentApp(
 //
 addEntrypoint({
   key: "launder",
-  description: "Launder some cash",
+  description: "Called when it's time to launder some cash",
   input: z.object({
-    abstract: z.string().min(1, "Past day news abstract."),
+    abstract: z.string().min(1, "Past day activities abstract."),
   }),
   handler: async (ctx: any) => {
     // console.log('Context >>>', ctx);

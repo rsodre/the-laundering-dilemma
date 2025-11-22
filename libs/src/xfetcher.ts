@@ -4,9 +4,10 @@ import {
   wrapFetchWithPayment,
   createSigner,
   type Hex,
+  type Signer,
 } from "x402-fetch";
-import { Signer, isEvmSignerWallet } from 'x402/types';
-import { formatCash, getBalance, sleep } from "libs/src";
+import { formatCash, sleep } from "./misc";
+import { getBalance } from "./cdp";
 
 config();
 
@@ -31,7 +32,7 @@ export const xfetcher = async (url: string, input: any) => {
   const signer_address = signer.account.address;
 
   // Get the USDC balance of signer on Base Sepolia
-  // console.log("signer", signer_address);
+  // console.log(">>> signer", signer_address);
   const balance_before = await getBalance(signer_address);
   // console.log(`USDC Balance on base-sepolia:`, balance_before);
   console.log(`[USDC] Balance before:`, balance_before.formatted_cash);

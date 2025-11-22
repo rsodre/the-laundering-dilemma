@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { LaunderStrategy, LAUNDROMATS } from 'libs/src';
+import { LAUNDROMATS, Strategy } from "libs/src/constants";
 
-export async function handler(strategy: LaunderStrategy, ctx: any) {
+export async function handler(strategy: Strategy, ctx: any) {
   const name = String(ctx.input?.name ?? '').trim();
   const account = String(ctx.input?.account ?? '').trim();
   console.log(`[Laundromat:${strategy}] : ${name}`);

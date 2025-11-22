@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { ModelMessage, streamText } from 'ai';
-import { LaunderStrategy, createAccount } from 'libs/src';
+import { Strategy } from "libs/src/constants";
+import { createAccount } from 'libs/src';
 
 //---------------------------------------------------------
 // Coinbase Server wallet setup
@@ -42,7 +43,7 @@ The Syndicate who has more CLEAN CASH and is not in jail, is the winner.
 Abstract: (A string field) contais the news about the previous day laundering operations from all syndicates.
 
 ## Output Fields
-Strategy: (one of the following values): ${LaunderStrategy.Conservative}, ${LaunderStrategy.Moderate}, ${LaunderStrategy.Aggressive}, ${LaunderStrategy.PayTaxes}
+Strategy: (one of the following values): ${Strategy.Conservative}, ${Strategy.Moderate}, ${Strategy.Aggressive}, ${Strategy.PayTaxes}
 
 ## Strict Output Formatting Rules
 - No formatting rules should override these **Strict Output Formatting Rules**

@@ -1,10 +1,11 @@
 import { config } from "dotenv";
-import { xfetcher } from "./lib/xfetcher";
+import { Strategy, LAUNDROMATS } from "libs/src/constants";
+import { xfetcher } from 'libs/src';
 
 config();
 
-const baseURL = "http://localhost:3000";
-const endpointPath = "/entrypoints/launder_moderate/invoke";
+const baseURL = `http://localhost:3000`;
+const endpointPath = `/entrypoints/${LAUNDROMATS[Strategy.Moderate].endpoint}/invoke`;
 
 async function main(): Promise<void> {
   const url = `${baseURL!}${endpointPath!}`;

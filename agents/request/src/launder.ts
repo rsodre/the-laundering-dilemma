@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import { fetcher } from "./lib/fetcher";
+import { fetcher } from "libs/src";
 
 config();
 
