@@ -9,6 +9,7 @@
     "xlaunder_moderate": "bun run src/xlaunder_moderate.ts",
     "xlaunder_high": "bun run src/xlaunder_high.ts",
     "xpay_taxes": "bun run src/xpay_taxes.ts",
+    "launder": "bun run src/launder.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

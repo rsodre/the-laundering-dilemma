@@ -13,6 +13,7 @@
         "@lucid-agents/hono": "0.6.0",
         "ai": "^5.0.98",
         "dotenv": "^17.2.3",
+        "libs": "workspace:*",
         "zod": "^4.1.12",
       },
       "devDependencies": {
@@ -44,6 +45,7 @@
         "@lucid-agents/hono": "0.6.0",
         "ai": "^5.0.98",
         "dotenv": "^17.2.3",
+        "libs": "workspace:*",
         "zod": "^4.1.12",
       },
       "devDependencies": {

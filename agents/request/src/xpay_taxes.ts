@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import { fetcher } from "./lib/fetcher";
+import { xfetcher } from "./lib/xfetcher";
 
 config();
 
@@ -10,7 +10,7 @@ async function main(): Promise<void> {
   const url = `${baseURL!}${endpointPath!}`;
   console.log(`url: [${url}]`);
 
-  const output = await fetcher(url, {
+  const output = await xfetcher(url, {
     input: {
       name: "Papito",
       account: "0x1234567890123456789012345678901234567890"

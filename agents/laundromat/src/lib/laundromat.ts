@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { LaunderStrategy, LAUNDROMATS } from './constants';
+import { LaunderStrategy, LAUNDROMATS } from 'libs/src';
 
 export async function handler(strategy: LaunderStrategy, ctx: any) {
   const name = String(ctx.input?.name ?? '').trim();

@@ -1,19 +1,19 @@
 import { config } from "dotenv";
-import { xfetcher } from "./lib/xfetcher";
+import { fetcher } from "./lib/fetcher";
 
 config();
 
-const baseURL = "http://localhost:3000";
-const endpointPath = "/entrypoints/launder_moderate/invoke";
+const baseURL = "http://localhost:3100";
+const endpointPath = "/entrypoints/launder/invoke";
 
 async function main(): Promise<void> {
   const url = `${baseURL!}${endpointPath!}`;
   console.log(`url: [${url}]`);
 
-  const output = await xfetcher(url, {
+  const output = await fetcher(url, {
     input: {
-      name: "Papito",
-      account: "0x1234567890123456789012345678901234567890"
+      // abstract: "Everything is calm, no activity during the past day."
+      abstract: "The police is in high alert."
     }
   });
 }

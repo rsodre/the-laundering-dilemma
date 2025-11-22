@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
 import { handler } from "./laundromat";
-import { LaunderStrategy, LAUNDROMATS } from "./constants";
+import { LaunderStrategy, LAUNDROMATS } from "libs/src";
 
 const appOptions = {
   payments: {
@@ -25,15 +25,15 @@ const _price = (strategy: LaunderStrategy) => {
 };
 
 addEntrypoint({
-  key: LAUNDROMATS[LaunderStrategy.Low].endpoint,
-  description: LAUNDROMATS[LaunderStrategy.Low].description,
+  key: LAUNDROMATS[LaunderStrategy.Conservative].endpoint,
+  description: LAUNDROMATS[LaunderStrategy.Conservative].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(LaunderStrategy.Low),
+  price: _price(LaunderStrategy.Conservative),
   handler: async (ctx: any) => {
-    return await handler(LaunderStrategy.Low, ctx);
+    return await handler(LaunderStrategy.Conservative, ctx);
   },
 });
 
@@ -51,15 +51,15 @@ addEntrypoint({
 });
 
 addEntrypoint({
-  key: LAUNDROMATS[LaunderStrategy.High].endpoint,
-  description: LAUNDROMATS[LaunderStrategy.High].description,
+  key: LAUNDROMATS[LaunderStrategy.Aggressive].endpoint,
+  description: LAUNDROMATS[LaunderStrategy.Aggressive].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(LaunderStrategy.High),
+  price: _price(LaunderStrategy.Aggressive),
   handler: async (ctx: any) => {
-    return await handler(LaunderStrategy.High, ctx);
+    return await handler(LaunderStrategy.Aggressive, ctx);
   },
 });
 

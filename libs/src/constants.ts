@@ -1,9 +1,9 @@
 
 export enum LaunderStrategy {
-  Low = 'low',
+  Conservative = 'conservative',
   Moderate = 'moderate',
-  High = 'high',
-  PayTaxes = 'taxes',
+  Aggressive = 'aggressive',
+  PayTaxes = 'pay_taxes',
 }
 
 export type LaundromatType = {
@@ -14,8 +14,8 @@ export type LaundromatType = {
 };
 
 export const LAUNDROMATS: Record<LaunderStrategy, LaundromatType> = {
-  [LaunderStrategy.Low]: {
-    endpoint: 'launder_low',
+  [LaunderStrategy.Conservative]: {
+    endpoint: 'launder_conservative',
     description: 'Launder with low risk ($10,000)',
     amount: 10000,
     tax: 0,
@@ -26,8 +26,8 @@ export const LAUNDROMATS: Record<LaunderStrategy, LaundromatType> = {
     amount: 50000,
     tax: 0,
   },
-  [LaunderStrategy.High]: {
-    endpoint: 'launder_high',
+  [LaunderStrategy.Aggressive]: {
+    endpoint: 'launder_aggressive',
     description: 'Launder with high risk ($100,000)',
     amount: 100000,
     tax: 0,
