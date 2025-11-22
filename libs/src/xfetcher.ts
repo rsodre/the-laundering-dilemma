@@ -22,15 +22,18 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY as Hex | string;
  * - ENDPOINT_PATH          Endpoint path (e.g. /entrypoints/echo/invoke)
  */
 export const xfetcher = async (url: string, input: any, privateKey?: Hex | undefined) => {
+  console.log(`[USDC] Signer private key:`, privateKey);
   const signer = await createSigner("base-sepolia", (privateKey ?? PRIVATE_KEY)!) as Signer;
   //@ts-ignore
   const signer_address = signer.account.address;
 
+  console.log(`[USDC] Signer address:`, signer_address);
+
   // Get the USDC balance of signer on Base Sepolia
   // console.log(">>> signer", signer_address);
   const balance_before = await getBalance(signer_address);
-  // console.log(`USDC Balance on base-sepolia:`, balance_before);
-  console.log(`[USDC] Balance before:`, balance_before.formatted_cash);
+  console.log(`[USDC] Balance before:`, balance_before);
+  // console.log(`[USDC] Balance before:`, balance_before.formatted_cash);
 
   //@ts-ignore
   const fetchWithPayment = wrapFetchWithPayment(fetch, signer);

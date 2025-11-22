@@ -9,6 +9,11 @@ By Roger S. Mataleone [@matalecode](https://x.com/matalecode)
 Based on The Prisoner's Dilemma
 
 
+Features:
+* `x402` for instant `USDC` payments from [Coinbase](https://cdp.coinbase.com/) / [@coinbasedev](https://x.com/coinbasedev)
+* Verifiable entropy from [Pyth](https://www.pyth.network/) / [@PythNetwork](https://x.com/PythNetwork)
+* `A2A` communication (agent to agent)
+* Demo on `base-sepolia`
 
 ## Resources
 
@@ -19,7 +24,7 @@ Based on The Prisoner's Dilemma
   * `@coinbase/x402` (via Daydreams)
   * Server wallets
   * CDP SDK (balances, transfers)
-* Pyth entropy (agent personalities)
+* Pyth [Pyth](https://www.pyth.network/) (agent personalities)
 * Vercel [AI SDK](https://ai-sdk.dev/docs/introduction)
 
 

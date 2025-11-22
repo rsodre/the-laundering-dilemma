@@ -9,7 +9,35 @@ import { bigintEquals, formatCash } from './misc';
 //
 
 const cdp = new CdpClient();
-const network = "base-sepolia";  // Base mainnet
+const NETWORK = "base-sepolia";  // Base mainnet
+
+// USDC Contract Addresses
+// https://developers.circle.com/stablecoins/usdc-contract-addresses
+const USDC_ADDRESS_MAINNET = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+const USDC_ADDRESS_SEPOLIA = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+
+
+//---------------------------------------------------------
+// Create server wallet
+//
+// https://docs.cdp.coinbase.com/server-wallets/v2/introduction/quickstart
+// https://docs.cdp.coinbase.com/server-wallets/v2/using-the-wallet-api/managing-accounts#evm-accounts
+//
+export const createAccount = async (accountName: string): Promise<EvmServerAccount> => {
+  const account: EvmServerAccount = await cdp.evm.getOrCreateAccount({
+    name: accountName,
+  });
+  console.log(`>>> [Wallet] for [${accountName}]:`, account.address);
+  return account;
+}
+export const exportAccountKey = async (accountName: string): Promise<string> => {
+  let privateKey = await cdp.evm.exportAccount({
+    name: accountName
+  })
+  console.log(`>>> [Private Key] for [${accountName}]:`, Boolean(privateKey));
+  return `0x${privateKey}`;
+}
+
 
 
 //---------------------------------------------------------
@@ -17,15 +45,10 @@ const network = "base-sepolia";  // Base mainnet
 // https://docs.cdp.coinbase.com/data/token-balance/cdp-sdk#example
 //
 
-// USDC Contract Addresses
-// https://developers.circle.com/stablecoins/usdc-contract-addresses
-const USDC_ADDRESS_MAINNET = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
-const USDC_ADDRESS_SEPOLIA = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
-
 export const getBalance = async (account: Address) => {
   const result = await cdp.evm.listTokenBalances({
     address: account,
-    network: network,
+    network: NETWORK,
   });
 
   // console.log(result?.balances)
@@ -43,22 +66,27 @@ export const getBalance = async (account: Address) => {
 
 
 //---------------------------------------------------------
-// Create server wallet
+// Fund account with USDC
+// https://docs.cdp.coinbase.com/data/token-balance/cdp-sdk#example
 //
-// https://docs.cdp.coinbase.com/server-wallets/v2/introduction/quickstart
-// https://docs.cdp.coinbase.com/server-wallets/v2/using-the-wallet-api/managing-accounts#evm-accounts
-//
-export const createAccount = async (accountName: string): Promise<Address> => {
-  const account: EvmServerAccount = await cdp.evm.getOrCreateAccount({
-    name: accountName,
-  });
-  console.log(`>>> [Wallet] for [${accountName}]:`, account.address);
-  return account.address;
-}
-export const exportAccountKey = async (accountName: string): Promise<string> => {
-  let privateKey = await cdp.evm.exportAccount({
-    name: accountName
+const FUNDED_ACCOUNT_NAME = "FundedAccount";
+export const fundWallet = async (privateKey: Address, receiver: EvmServerAccount, amount: bigint) => {
+  let sender: EvmServerAccount;
+  try {
+    sender = await cdp.evm.importAccount({
+      privateKey,
+      name: FUNDED_ACCOUNT_NAME,
+    });
+  } catch (error) {
+    sender = await cdp.evm.getOrCreateAccount({
+      name: FUNDED_ACCOUNT_NAME,
+    });
+  }
+  console.log(`>>> [Funded Account] balance:`, await getBalance(sender.address));
+  await sender.transfer({
+    to: receiver,
+    amount,
+    token: USDC_ADDRESS_SEPOLIA,
+    network: NETWORK,
   })
-  console.log(`>>> [Private Key] for [${accountName}]:`, Boolean(privateKey));
-  return privateKey;
 }

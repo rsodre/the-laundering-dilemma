@@ -44,6 +44,7 @@
         "ai": "^5.0.98",
         "dotenv": "^17.2.3",
         "libs": "workspace:*",
+        "viem": "^2.39.3",
         "zod": "^4.1.12",
       },
       "devDependencies": {

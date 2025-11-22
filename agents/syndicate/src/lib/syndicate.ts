@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { ModelMessage, streamText } from 'ai';
-import { createAccount, exportAccountKey, xfetcher } from 'libs/src';
+import { createAccount, exportAccountKey, sleep, xfetcher } from 'libs/src';
+import { fundWallet, getBalance } from "libs/src/cdp";
 import {
   Strategy,
   CYCLE_COUNT,
@@ -14,6 +15,7 @@ import {
   LAUNDROMAT_BASE_URL,
   LAUNDROMATS,
 } from "libs/src/constants";
+import { Address } from 'viem/accounts';
 
 //---------------------------------------------------------
 // Coinbase Server wallet setup
@@ -28,7 +30,21 @@ const clean_account = await createAccount(CLEAN_ACCOUNT_NAME);
 const dirty_account = await createAccount(DIRTY_ACCOUNT_NAME);
 //
 // export private keys...
-const dirty_private_key = await exportAccountKey(DIRTY_ACCOUNT_NAME);
+const dirty_private_key = await exportAccountKey(DIRTY_ACCOUNT_NAME) as Address;
+
+//
+// fund wallet
+const balance = await getBalance(dirty_account.address);
+console.log(`[${DIRTY_ACCOUNT_NAME}] balance:`, balance.formatted_cash);
+const amount_to_fund = BigInt(STARTING_DIRTY_CASH) - balance.balance;
+if (amount_to_fund > 0n) {
+  console.log(`[${DIRTY_ACCOUNT_NAME}] funding wallet with:`, amount_to_fund);
+  await fundWallet(process.env.PRIVATE_KEY! as Address, dirty_account, amount_to_fund);
+  console.log(`[${DIRTY_ACCOUNT_NAME}] waiting for confirmation...`);
+  await sleep(5000);
+  const balance = await getBalance(dirty_account.address);
+  console.log(`[${DIRTY_ACCOUNT_NAME}] balance:`, balance.formatted_cash);
+}
 
 
 
@@ -135,10 +151,9 @@ export async function handler(ctx: any) {
       input: {
         boss_name: BOSS_NAME,
         name: SYNDICATE_NAME,
-        account: clean_account
+        account: clean_account.address
       },
-      // dirty_private_key, // TODO: add funds to wallet
-    });
+    }, dirty_private_key);
     amount_clean = Number(output?.amount_clean ?? 0);
     amount_lost = Number(output?.amount_lost ?? 0);
     success = true;
