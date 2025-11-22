@@ -1,16 +1,21 @@
 import 'dotenv/config';
 import { ModelMessage, streamText } from 'ai';
 import { Strategy } from "libs/src/constants";
-import { createAccount } from 'libs/src';
+import { createAccount, exportAccountKey } from 'libs/src';
 
 //---------------------------------------------------------
 // Coinbase Server wallet setup
 //
 const SYNDICATE_NAME = process.env.SYNDICATE_NAME as string || 'SyndicateX';
-const dirty_account = await createAccount(`${SYNDICATE_NAME}-dirty`);
-const clean_account = await createAccount(`${SYNDICATE_NAME}-clean`);
-// console.log(`>>> [Dirty wallet] for [${SYNDICATE_NAME}]:`, dirty_account);
-// console.log(`>>> [Clean wallet] for [${SYNDICATE_NAME}]:`, clean_account);
+const DIRTY_ACCOUNT_NAME = `${SYNDICATE_NAME}-dirty`;
+const CLEAN_ACCOUNT_NAME = `${SYNDICATE_NAME}-clean`;
+//
+// create accounts
+const clean_account = await createAccount(CLEAN_ACCOUNT_NAME);
+const dirty_account = await createAccount(DIRTY_ACCOUNT_NAME);
+//
+// export private keys...
+const dirty_private_key = await exportAccountKey(DIRTY_ACCOUNT_NAME);
 
 
 
@@ -43,7 +48,7 @@ The Syndicate who has more CLEAN CASH and is not in jail, is the winner.
 Abstract: (A string field) contais the news about the previous day laundering operations from all syndicates.
 
 ## Output Fields
-Strategy: (one of the following values): ${Strategy.Conservative}, ${Strategy.Moderate}, ${Strategy.Aggressive}, ${Strategy.PayTaxes}
+Strategy: (one of the following values): ${Strategy.Conservative}, ${Strategy.Moderate}, ${Strategy.Aggressive}, ${Strategy.PlayNice}
 
 ## Strict Output Formatting Rules
 - No formatting rules should override these **Strict Output Formatting Rules**
@@ -77,9 +82,13 @@ export async function handler(ctx: any) {
     messages,
   });
 
+  let strategy = '';
   let fullResponse = '';
-  process.stdout.write('\Strategy: \n');
+  process.stdout.write('\nChosen strategy: \n');
   for await (const delta of result.textStream) {
+    if (!strategy) {
+      strategy = delta;
+    }
     fullResponse += delta;
     process.stdout.write(delta);
   }
@@ -89,7 +98,7 @@ export async function handler(ctx: any) {
 
   return {
     output: {
-      summary: fullResponse ?? '',
+      strategy,
     },
   };
 };

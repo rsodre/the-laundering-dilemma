@@ -72,15 +72,15 @@ addEntrypoint({
 });
 
 addEntrypoint({
-  key: LAUNDROMATS[Strategy.PayTaxes].endpoint,
-  description: LAUNDROMATS[Strategy.PayTaxes].description,
+  key: LAUNDROMATS[Strategy.PlayNice].endpoint,
+  description: LAUNDROMATS[Strategy.PlayNice].description,
   input: z.object({
     name: z.string().min(1, "The Syndicate name."),
     account: z.string().min(1, "Target account address."),
   }),
-  price: _price(Strategy.PayTaxes),
+  price: _price(Strategy.PlayNice),
   handler: async (ctx: any) => {
-    return await handler(Strategy.PayTaxes, ctx);
+    return await handler(Strategy.PlayNice, ctx);
   },
 });
 

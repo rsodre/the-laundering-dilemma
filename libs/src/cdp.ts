@@ -48,11 +48,17 @@ export const getBalance = async (account: Address) => {
 // https://docs.cdp.coinbase.com/server-wallets/v2/introduction/quickstart
 // https://docs.cdp.coinbase.com/server-wallets/v2/using-the-wallet-api/managing-accounts#evm-accounts
 //
-export const createAccount = async (name: string): Promise<Address> => {
+export const createAccount = async (accountName: string): Promise<Address> => {
   const account: EvmServerAccount = await cdp.evm.getOrCreateAccount({
-    name,
+    name: accountName,
   });
-  console.log(`>>> [Wallet] for [${name}]:`, account.address);
+  console.log(`>>> [Wallet] for [${accountName}]:`, account.address);
   return account.address;
 }
-
+export const exportAccountKey = async (accountName: string): Promise<string> => {
+  let privateKey = await cdp.evm.exportAccount({
+    name: accountName
+  })
+  console.log(`>>> [Private Key] for [${accountName}]:`, Boolean(privateKey));
+  return privateKey;
+}

@@ -1,9 +1,29 @@
 
+//---------------------------------------------------------
+// Laundering market conditions
+//
+
+export const CYCLE_COUNT = 7;
+export const SYNDICATE_COUNT = 5;
+export const STARTING_DIRTY_CASH = 100_000;
+
+// laundering amounts
+export const CONSERVATIVE_AMOUNT = 5_000;
+export const MODERATE_AMOUNT = 10_000;
+export const AGGRESSIVE_AMOUNT = 25_000;
+export const PAY_TAXES_AMOUNT = 20_000;
+
+
+
+//---------------------------------------------------------
+// Strategies
+//
+
 export enum Strategy {
   Conservative = 'conservative',
   Moderate = 'moderate',
   Aggressive = 'aggressive',
-  PayTaxes = 'pay_taxes',
+  PlayNice = 'play_nice',
 }
 
 export type LaundromatType = {
@@ -17,25 +37,25 @@ export const LAUNDROMATS: Record<Strategy, LaundromatType> = {
   [Strategy.Conservative]: {
     endpoint: 'launder_conservative',
     description: 'Launder with low risk ($10,000)',
-    amount: 10000,
+    amount: CONSERVATIVE_AMOUNT,
     tax: 0,
   },
   [Strategy.Moderate]: {
     endpoint: 'launder_moderate',
     description: 'Launder with moderate risk ($50,000)',
-    amount: 50000,
+    amount: MODERATE_AMOUNT,
     tax: 0,
   },
   [Strategy.Aggressive]: {
     endpoint: 'launder_aggressive',
     description: 'Launder with high risk ($100,000)',
-    amount: 100000,
+    amount: AGGRESSIVE_AMOUNT,
     tax: 0,
   },
-  [Strategy.PayTaxes]: {
+  [Strategy.PlayNice]: {
     endpoint: 'pay_taxes',
     description: 'Pay 40% taxes over $100,000, no laundering required.',
-    amount: 100000,
+    amount: PAY_TAXES_AMOUNT,
     tax: 40,
   },
 };

@@ -6,7 +6,6 @@ By Roger Mataleone [@matalecode](https://x.com/matalecode)
 
 ## The Laundering Dilemma
 
-
 Based on The Prisoner's Dilemma
 
 
@@ -16,6 +15,8 @@ Based on The Prisoner's Dilemma
 * Daydreams: [@lucid-agents](https://github.com/daydreamsai/lucid-agents)
 * Coinbase Developer Platform: [CPD](https://docs.cdp.coinbase.com/)
   * x402 facilitator
+  * `x402-fetch` 
+  * `@coinbase/x402` (via Daydreams)
   * Server wallets
   * CDP SDK (balances, transfers)
 * Pyth entropy

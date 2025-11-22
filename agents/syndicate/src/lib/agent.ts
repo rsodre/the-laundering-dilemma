@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createAgentApp } from "@lucid-agents/hono";
 import { handler } from "./syndicate";
+import { Strategy } from "libs/src/constants";
 
 
 //---------------------------------------------------------
@@ -25,11 +26,24 @@ const { app, runtime, addEntrypoint } = createAgentApp(
 //
 // Daydreams endpoints
 //
+// addEntrypoint({
+//   key: "profile",
+//   description: "Get this Syndicate profile information",
+//   input: z.object({}),
+//   handler: async (ctx: any) => {
+//     // console.log('Context >>>', ctx);
+//     return await handler(ctx);
+//   },
+// });
+
 addEntrypoint({
   key: "launder",
   description: "Called when it's time to launder some cash",
   input: z.object({
     abstract: z.string().min(1, "Past day activities abstract."),
+  }),
+  output: z.object({
+    strategy: z.enum([Strategy.Conservative, Strategy.Moderate, Strategy.Aggressive, Strategy.PlayNice]).describe(`Laundering strategy`),
   }),
   handler: async (ctx: any) => {
     // console.log('Context >>>', ctx);
