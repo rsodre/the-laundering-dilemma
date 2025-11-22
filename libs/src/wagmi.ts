@@ -36,7 +36,7 @@ export const getBalance = async (account: string) => {
   return {
     account,
     balance: result,
-    // formatted: formatUnits(result, 6),
-    formatted: formatCash(result),
+    formatted: formatUnits(result, 6),
+    formatted_cash: formatCash(result),
   }
 }

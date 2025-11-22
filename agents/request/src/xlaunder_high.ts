@@ -4,7 +4,7 @@ import { fetcher } from "./lib/fetcher";
 config();
 
 const baseURL = "http://localhost:3000";
-const endpointPath = "/entrypoints/launder_low/invoke";
+const endpointPath = "/entrypoints/launder_high/invoke";
 
 async function main(): Promise<void> {
   const url = `${baseURL!}${endpointPath!}`;

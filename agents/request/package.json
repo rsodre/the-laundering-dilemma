@@ -6,6 +6,9 @@
   "scripts": {
     "balances": "bun run src/balances.ts",
     "xlaunder_low": "bun run src/xlaunder_low.ts",
+    "xlaunder_moderate": "bun run src/xlaunder_moderate.ts",
+    "xlaunder_high": "bun run src/xlaunder_high.ts",
+    "xpay_taxes": "bun run src/xpay_taxes.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
