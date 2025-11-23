@@ -49,6 +49,8 @@ export const syndicate_launder_output_schema = z.object({
   strategy: z.enum([Strategy.Conservative, Strategy.Moderate, Strategy.Aggressive, Strategy.PlayNice]).describe(`Laundering strategy`),
   amount_clean: z.number().describe(`Laundered amount`),
   amount_lost: z.number().describe(`Taxed/Lost amount`),
+  dirty_balance: z.number().describe(`Dirty balance`),
+  clean_balance: z.number().describe(`Clean balance`),
   busted: z.boolean().describe(`Busted flag`),
   success: z.boolean().describe(`Success flag`),
 });

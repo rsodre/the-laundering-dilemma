@@ -86,7 +86,7 @@ addEntrypoint({
   input: z.object({}),
   output: laundromat_abstract_output_schema,
   handler: async (ctx: any) => {
-    console.log('Context >>>', ctx);
+    // console.log('Context >>>', ctx);
     return await abstract_handler(ctx);
   },
 });

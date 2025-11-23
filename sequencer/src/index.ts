@@ -68,15 +68,24 @@ async function main(): Promise<void> {
         continue;
       }
 
+      // Launder...
       console.log(`[${syndicate.name}] laundering...`);
       const launder = await getSyndicateLaunder(syndicate, abstract);
       console.log(`[${syndicate.name}] launder result:`, launder);
 
+      // update authority...
+      await sleep(1000);
+      const authority_account = await getServerAccount(AUTHORITY_ACCOUNT_NAME);
+      const balance_authority = await getBalance(authority_account.address);
+
       // log for the client...
+      _log.authority_balance = Number(balance_authority.balance);
       _log.days[dayIndex].syndicates[syndicate.name] = {
         strategy: launder.strategy,
         amount_clean: launder.amount_clean,
         amount_lost: launder.amount_lost,
+        dirty_balance: launder.dirty_balance,
+        clean_balance: launder.clean_balance,
         busted: launder.busted,
         success: launder.success,
       };

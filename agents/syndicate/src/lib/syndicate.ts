@@ -201,11 +201,17 @@ export async function launder_handler(ctx: any) {
   messages.push({ role: 'user', content: fullResponse });
   console.log(`>>> Operation summary:`, fullResponse);
 
+  await sleep(1000);
+  const dirty_balance = await getBalance(dirty_account.address);
+  const clean_balance = await getBalance(clean_account.address);
+
   return {
     output: {
       strategy,
       amount_clean,
       amount_lost,
+      dirty_balance: Number(dirty_balance.balance),
+      clean_balance: Number(clean_balance.balance),
       busted,
       success,
     },

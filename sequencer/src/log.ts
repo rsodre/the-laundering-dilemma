@@ -10,6 +10,7 @@ config();
 //
 export type LogType = {
   currentDay: number;
+  authority_balance: number;
   days: {
     day: number;
     abstract: string;
@@ -17,6 +18,8 @@ export type LogType = {
       strategy: string;
       amount_clean: number;
       amount_lost: number;
+      dirty_balance: number;
+      clean_balance: number;
       busted: boolean;
       success: boolean;
     }>;
@@ -25,6 +28,7 @@ export type LogType = {
 
 export let _log: LogType = {
   currentDay: 0,
+  authority_balance: 0,
   days: [],
 };
 

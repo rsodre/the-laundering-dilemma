@@ -55,7 +55,7 @@ procs:
       echo "waiting for laundromat to start..."
       wait-port 3000
       bun run start
-  # client:
-  #   cwd: client
-  #   shell: |
-  #     bun run dev
+  client:
+    cwd: client
+    shell: |
+      bun run dev
