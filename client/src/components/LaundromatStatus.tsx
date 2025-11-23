@@ -30,7 +30,7 @@ export const LaundromatStatus = ({ abstract, isLoading, onRefresh }: LaundromatS
             </Button>
           )}
         </div>
-        <CardDescription>Market conditions and daily abstract</CardDescription>
+        <CardDescription>Get a fresh market situation</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading && !abstract ? (

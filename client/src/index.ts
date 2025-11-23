@@ -127,7 +127,6 @@ const server = serve({
           });
 
           if (!result || !result.balances) {
-            console.warn(`[balance-cdp] No balances found for address ${address}`);
             return Response.json({
               name: undefined,
               address,
@@ -177,7 +176,6 @@ const server = serve({
           });
         } catch (sdkError) {
           // If SDK fails, return a default balance object instead of crashing
-          console.warn(`[balance-cdp] SDK error for ${address}, returning zero balance:`, sdkError);
           return Response.json({
             name: undefined,
             address,
@@ -192,12 +190,64 @@ const server = serve({
           });
         }
       } catch (error) {
-        console.error("Balance fetch error:", error);
         const errorMessage = error instanceof Error ? error.message : String(error);
         return Response.json({ 
           error: errorMessage,
           message: error instanceof Error ? error.stack : "Unknown error"
         }, { status: 503 });
+      }
+    },
+
+    // Activity data endpoint - serves experiment activity data
+    "/api/activity": async (req) => {
+      try {
+        // Option 1: Read from JSON file (if sequencer writes to it)
+        // const activityData = await Bun.file("./activity.json").json();
+        
+        // Option 2: Read from a shared location
+        // For now, return empty structure - you can update this to read from your JSON file
+        const activityData = {
+          currentDay: null,
+          days: {} as Record<number, {
+            day: number;
+            abstract: string | null;
+            syndicateActivities: Record<string, {
+              syndicateName: string;
+              strategy?: string;
+              amountClean?: number;
+              amountLost?: number;
+              busted?: boolean;
+              success?: boolean;
+            }>;
+          }>,
+        };
+
+        // Try to read from activity_log.json
+        try {
+          const file = Bun.file("./src/data/activity_log.json");
+          if (await file.exists()) {
+            const fileData = await file.json();
+            return Response.json(fileData, {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET",
+                "Cache-Control": "no-cache",
+              },
+            });
+          }
+        } catch (error) {
+          // File doesn't exist or can't be read, return empty structure
+        }
+
+        return Response.json(activityData, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET",
+            "Cache-Control": "no-cache",
+          },
+        });
+      } catch (error) {
+        return Response.json({ error: String(error) }, { status: 500 });
       }
     },
 

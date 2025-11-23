@@ -9,8 +9,10 @@ import {
   checkSyndicateHealth,
   checkLaundromatHealth,
   getBalance,
+  getActivityData,
   type SyndicateInfo,
   type BalanceResult,
+  type ActivityData,
 } from "@/lib/api";
 import type {
   SyndicateProfileOutputType,
@@ -34,6 +36,7 @@ export const App = () => {
   const [laundromatAvailable, setLaundromatAvailable] = useState(false);
   const [healthStatus, setHealthStatus] = useState<Record<string, boolean>>({});
   const [balances, setBalances] = useState<Record<string, { dirty: BalanceResult | null; clean: BalanceResult | null }>>({});
+  const [activityData, setActivityData] = useState<ActivityData | null>(null);
 
   const loadSyndicateProfile = useCallback(async (syndicate: SyndicateInfo) => {
     try {
@@ -58,52 +61,19 @@ export const App = () => {
           return;
         }
 
-        console.log(`[${syndicate.name}] Fetching balances for:`, {
-          dirty: profile.dirty_wallet_address,
-          clean: profile.clean_wallet_address,
-        });
-
         const [dirtyBalance, cleanBalance] = await Promise.all([
           getBalance(profile.dirty_wallet_address),
           getBalance(profile.clean_wallet_address),
         ]);
 
-        console.log(`[${syndicate.name}] Balance results:`, {
-          dirty: {
-            address: dirtyBalance.address,
-            balance: dirtyBalance.balance.toString(),
-            formatted: dirtyBalance.formatted_cash,
-            full: dirtyBalance,
+        setBalances((prev) => ({
+          ...prev,
+          [syndicate.name]: {
+            dirty: dirtyBalance,
+            clean: cleanBalance,
           },
-          clean: {
-            address: cleanBalance.address,
-            balance: cleanBalance.balance.toString(),
-            formatted: cleanBalance.formatted_cash,
-            full: cleanBalance,
-          },
-        });
-
-        // Verify we got the correct addresses back
-        if (dirtyBalance.address !== profile.dirty_wallet_address) {
-          console.warn(`[${syndicate.name}] Dirty balance address mismatch: expected ${profile.dirty_wallet_address}, got ${dirtyBalance.address}`);
-        }
-        if (cleanBalance.address !== profile.clean_wallet_address) {
-          console.warn(`[${syndicate.name}] Clean balance address mismatch: expected ${profile.clean_wallet_address}, got ${cleanBalance.address}`);
-        }
-
-        setBalances((prev) => {
-          const updated = {
-            ...prev,
-            [syndicate.name]: {
-              dirty: dirtyBalance,
-              clean: cleanBalance,
-            },
-          };
-          console.log(`[${syndicate.name}] Updated balances state:`, Object.keys(updated));
-          return updated;
-        });
+        }));
       } catch (balanceError) {
-        console.error(`[${syndicate.name}] Failed to fetch balances:`, balanceError);
         setBalances((prev) => ({
           ...prev,
           [syndicate.name]: {
@@ -153,12 +123,25 @@ export const App = () => {
     }
   }, []);
 
+  const loadActivityData = useCallback(async () => {
+    try {
+      const data = await getActivityData();
+      setActivityData(data);
+      if (data.currentDay !== null) {
+        setCurrentDay(data.currentDay);
+      }
+    } catch (error) {
+      // Silently handle errors
+    }
+  }, []);
+
   const handleRefreshAll = useCallback(async () => {
     await loadAllProfiles();
+    await loadActivityData();
     if (currentDay !== null) {
       await loadAbstract(currentDay);
     }
-  }, [loadAllProfiles, loadAbstract, currentDay]);
+  }, [loadAllProfiles, loadActivityData, loadAbstract, currentDay]);
 
   const checkAllHealth = useCallback(async () => {
     // Check laundromat health
@@ -200,16 +183,18 @@ export const App = () => {
     return () => clearInterval(healthInterval);
   }, [checkAllHealth]);
 
-  // Auto-refresh
+  // Auto-refresh (excluding laundromat abstract - only loads on button press)
   useEffect(() => {
     if (!autoRefresh) return;
 
     const interval = setInterval(() => {
-      handleRefreshAll();
+      loadAllProfiles();
+      loadActivityData();
+      // Note: loadAbstract is NOT called here - only loads when refresh button is pressed
     }, 10000); // Refresh every 10 seconds
 
     return () => clearInterval(interval);
-  }, [autoRefresh, handleRefreshAll]);
+  }, [autoRefresh, loadAllProfiles, loadActivityData]);
 
   const currentAbstract = currentDay !== null ? daysData[currentDay]?.abstract ?? null : null;
 
@@ -217,28 +202,10 @@ export const App = () => {
     <div className="container mx-auto p-8 max-w-[1600px]">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold mb-2">The Laundering Dilemma</h1>
-        <p className="text-muted-foreground">
-          An Agentic Social Experiment • Prisoner's Dilemma on Base Sepolia
-        </p>
+              <p className="text-muted-foreground">
+                An Agentic Social Experiment • The Prisoner's Dilemma on x402
+              </p>
       </div>
-
-      <div className="mb-6">
-        <ServiceStatus
-          laundromatAvailable={laundromatAvailable}
-          syndicatesAvailable={Object.keys(profiles).filter((name) => profiles[name] !== null).length}
-          totalSyndicates={SYNDICATES.length}
-        />
-      </div>
-
-      {currentDay !== null && (
-        <div className="mb-6">
-          <LaundromatStatus
-            abstract={currentAbstract}
-            isLoading={isLoadingAbstract}
-            onRefresh={() => currentDay !== null && loadAbstract(currentDay)}
-          />
-        </div>
-      )}
 
       <div className="mb-6">
         <ExperimentGrid
@@ -248,8 +215,27 @@ export const App = () => {
           isLoading={isLoadingProfiles}
           healthStatus={healthStatus}
           balances={balances}
+          activityData={activityData}
+          laundromatAvailable={laundromatAvailable}
         />
       </div>
+
+      {/* Laundromat status box - hidden for now, can be re-enabled later */}
+      {false && (
+        <div className="mb-6">
+          <LaundromatStatus
+            abstract={currentAbstract}
+            isLoading={isLoadingAbstract}
+            onRefresh={() => {
+              if (currentDay !== null) {
+                loadAbstract(currentDay);
+              } else if (activityData?.currentDay !== null) {
+                loadAbstract(activityData.currentDay);
+              }
+            }}
+          />
+        </div>
+      )}
 
       <div className="text-center text-sm text-muted-foreground">
         <label className="flex items-center justify-center gap-2 cursor-pointer">

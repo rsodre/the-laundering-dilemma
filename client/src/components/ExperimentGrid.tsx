@@ -1,6 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { DayCell } from "@/components/DayCell";
-import { SYNDICATES, type BalanceResult } from "@/lib/api";
+import { ServiceStatus } from "@/components/ServiceStatus";
+import { SYNDICATES, type BalanceResult, type ActivityData } from "@/lib/api";
 import type { SyndicateLaunderOutputType, SyndicateProfileOutputType } from "libs/src/types";
 import { DAYS_COUNT } from "libs/src/constants";
 
@@ -16,26 +17,24 @@ type ExperimentGridProps = {
   isLoading?: boolean;
   healthStatus: Record<string, boolean>;
   balances: Record<string, { dirty: BalanceResult | null; clean: BalanceResult | null }>;
+  activityData: ActivityData | null;
+  laundromatAvailable: boolean;
 };
 
-export const ExperimentGrid = ({ daysData, profiles, currentDay, isLoading, healthStatus, balances }: ExperimentGridProps) => {
+export const ExperimentGrid = ({ daysData, profiles, currentDay, isLoading, healthStatus, balances, activityData, laundromatAvailable }: ExperimentGridProps) => {
+  // Always use DAYS_COUNT from constants, regardless of activity data length
   const days = Array.from({ length: DAYS_COUNT }, (_, i) => i + 1);
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Experiment Grid</CardTitle>
-        <CardDescription>
-          Days (rows) × Syndicates (columns) • {currentDay ? `Current Day: ${currentDay}` : "Not started"}
-          {/* Debug info */}
-          {Object.keys(healthStatus).length > 0 && (
-            <span className="ml-2 text-xs">
-              (Health: {Object.entries(healthStatus).filter(([_, v]) => v).length}/{Object.keys(healthStatus).length} healthy)
-            </span>
-          )}
-        </CardDescription>
-      </CardHeader>
       <CardContent>
+        <div className="mb-4">
+          <ServiceStatus
+            laundromatAvailable={laundromatAvailable}
+            syndicatesAvailable={Object.keys(healthStatus).filter((name) => healthStatus[name]).length}
+            totalSyndicates={SYNDICATES.length}
+          />
+        </div>
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full">
             <table className="w-full border-collapse">
@@ -132,38 +131,55 @@ export const ExperimentGrid = ({ daysData, profiles, currentDay, isLoading, heal
                 {days.map((day) => {
                   const dayData = daysData[day];
                   const isCurrentDay = currentDay === day;
+                  const activityDay = activityData?.days?.find(d => d.day === day);
 
                   return (
-                    <tr
-                      key={day}
-                      className={isCurrentDay ? "bg-primary/5" : ""}
-                    >
-                      <td className="sticky left-0 z-10 bg-background border p-2 font-medium text-center">
-                        <div className="flex flex-col items-center gap-1">
-                          <span>Day {day}</span>
-                          {isCurrentDay && (
-                            <span className="text-xs text-primary font-semibold">● Active</span>
-                          )}
-                        </div>
-                      </td>
-                      {SYNDICATES.map((syndicate) => {
-                        const launderResult = dayData?.syndicateResults?.[syndicate.name] ?? null;
-                        const profile = profiles[syndicate.name];
-                        const isBusted = profile?.busted ?? false;
-
-                        return (
-                          <td key={`${day}-${syndicate.name}`} className="border p-2">
-                            <DayCell
-                              day={day}
-                              syndicateName={syndicate.name}
-                              launderResult={launderResult}
-                              isBusted={isBusted}
-                              isLoading={isLoading && isCurrentDay}
-                            />
+                    <>
+                      {/* Abstract row - spans all columns */}
+                      {activityDay?.abstract && (
+                        <tr key={`abstract-${day}`} className={isCurrentDay ? "bg-primary/5" : ""}>
+                          <td colSpan={SYNDICATES.length + 1} className="border p-3 bg-muted/30">
+                            <div className="text-sm">
+                              <div className="font-semibold mb-1">Day {day} Abstract:</div>
+                              <div className="text-muted-foreground whitespace-pre-wrap">{activityDay.abstract}</div>
+                            </div>
                           </td>
-                        );
-                      })}
-                    </tr>
+                        </tr>
+                      )}
+                      {/* Day row with syndicate cells */}
+                      <tr
+                        key={day}
+                        className={isCurrentDay ? "bg-primary/5" : ""}
+                      >
+                        <td className="sticky left-0 z-10 bg-background border p-2 font-medium text-center">
+                          <div className="flex flex-col items-center gap-1">
+                            <span>Day {day}</span>
+                            {isCurrentDay && (
+                              <span className="text-xs text-primary font-semibold">● Active</span>
+                            )}
+                          </div>
+                        </td>
+                        {SYNDICATES.map((syndicate) => {
+                          const launderResult = dayData?.syndicateResults?.[syndicate.name] ?? null;
+                          const profile = profiles[syndicate.name];
+                          const isBusted = profile?.busted ?? false;
+                          const activity = activityDay?.syndicates?.[syndicate.name];
+
+                          return (
+                            <td key={`${day}-${syndicate.name}`} className="border p-2">
+                              <DayCell
+                                day={day}
+                                syndicateName={syndicate.name}
+                                launderResult={launderResult}
+                                isBusted={isBusted}
+                                isLoading={isLoading && isCurrentDay}
+                                activity={activity}
+                              />
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    </>
                   );
                 })}
               </tbody>

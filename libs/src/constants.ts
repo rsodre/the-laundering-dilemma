@@ -3,8 +3,8 @@
 // Laundering market conditions
 //
 
-export const DAYS_COUNT = 3;
-export const SYNDICATE_COUNT = 3;
+export const DAYS_COUNT = 1;
+export const SYNDICATE_COUNT = 5;
 export const STARTING_DIRTY_CASH = 100_000;
 export const LAUNDER_THRESHOLD = 45_000;
 export const LAUNDROMAT_BASE_URL = 'http://localhost:3000';

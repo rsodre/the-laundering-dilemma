@@ -1,0 +1,46 @@
+{
+  "currentDay": 1,
+  "days": [
+    {
+      "day": 1,
+      "abstract": "A new day begins with fresh books and clean ledgers. \n\nOperations reset, but the ceiling above us remains unchanged and unforgiving. Work methodically, disguise your flows, and remember that visible excess invites unwanted attention. Cooperation and prudence today mean longevity tomorrow.",
+      "syndicates": {
+        "Syndicate2": {
+          "strategy": "aggressive",
+          "amount_clean": 25000,
+          "amount_lost": 0,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate4": {
+          "strategy": "aggressive",
+          "amount_clean": 0,
+          "amount_lost": 25000,
+          "busted": true,
+          "success": true
+        },
+        "Syndicate3": {
+          "strategy": "play_nice",
+          "amount_clean": 12000,
+          "amount_lost": 8000,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate5": {
+          "strategy": "aggressive",
+          "amount_clean": 25000,
+          "amount_lost": 0,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate1": {
+          "strategy": "aggressive",
+          "amount_clean": 0,
+          "amount_lost": 25000,
+          "busted": true,
+          "success": true
+        }
+      }
+    }
+  ]
+}

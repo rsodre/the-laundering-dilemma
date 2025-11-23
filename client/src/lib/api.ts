@@ -165,4 +165,33 @@ export const getBalance = async (address: string): Promise<BalanceResult> => {
   };
 };
 
+export type ActivityData = {
+  currentDay: number | null;
+  days: Array<{
+    day: number;
+    abstract: string | null;
+    syndicates: Record<string, {
+      strategy: string;
+      amount_clean: number;
+      amount_lost: number;
+      busted: boolean;
+      success: boolean;
+    }>;
+  }>;
+};
+
+export const getActivityData = async (): Promise<ActivityData> => {
+  const response = await fetch("/api/activity", {
+    method: "GET",
+    headers: {
+      "Accept": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch activity: ${response.status}`);
+  }
+
+  return await response.json();
+};
 
