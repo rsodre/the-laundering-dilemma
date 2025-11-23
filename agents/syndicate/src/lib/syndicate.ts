@@ -8,6 +8,7 @@ import {
   getServerAccount,
   exportAccountKey,
   xfetcher,
+  transferCash,
 } from 'libs/src';
 import {
   Strategy,
@@ -21,6 +22,7 @@ import {
   STARTING_DIRTY_CASH,
   LAUNDROMAT_BASE_URL,
   LAUNDROMATS,
+  FUNDED_ACCOUNT_NAME,
 } from "libs/src/constants";
 
 
@@ -41,18 +43,19 @@ const dirty_private_key = await exportAccountKey(DIRTY_ACCOUNT_NAME) as Address;
 
 //
 // fund wallet
-const balance = await getBalance(dirty_account.address);
-console.log(`[${DIRTY_ACCOUNT_NAME}] balance:`, balance.formatted_cash);
-const amount_to_fund = BigInt(STARTING_DIRTY_CASH) - balance.balance;
+const dirty_balance = await getBalance(dirty_account.address);
+console.log(`[${DIRTY_ACCOUNT_NAME}] balance:`, dirty_balance.formatted_cash);
+const amount_to_fund = BigInt(STARTING_DIRTY_CASH) - dirty_balance.balance;
 if (amount_to_fund > 0n) {
-  console.log(`[${DIRTY_ACCOUNT_NAME}] funding wallet with:`, amount_to_fund);
+  console.log(`[${DIRTY_ACCOUNT_NAME}] funding dirty wallet:`, amount_to_fund);
   await fundSyndicate(process.env.PRIVATE_KEY! as Address, dirty_account, amount_to_fund);
-  console.log(`[${DIRTY_ACCOUNT_NAME}] waiting for confirmation...`);
-  await sleep(5000);
-  const balance = await getBalance(dirty_account.address);
-  console.log(`[${DIRTY_ACCOUNT_NAME}] balance:`, balance.formatted_cash);
 }
-
+// empty clean wallet
+const clean_balance = await getBalance(clean_account.address);
+if (clean_balance.balance > 0n) {
+  console.log(`[${CLEAN_ACCOUNT_NAME}] emptying clean wallet...`);
+  await transferCash(CLEAN_ACCOUNT_NAME, FUNDED_ACCOUNT_NAME, clean_balance.balance);
+}
 
 
 //---------------------------------------------------------
