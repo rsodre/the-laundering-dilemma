@@ -1,0 +1,168 @@
+import type {
+  SyndicateProfileOutputType,
+  SyndicateLaunderOutputType,
+  LaundromatAbstractOutputType,
+} from "libs/src/types";
+import { SYNDICATE_COUNT } from "libs/src/constants";
+
+const LAUNDROMAT_URL = "http://localhost:3000";
+const BASE_PORT = 3101;
+
+export type SyndicateInfo = {
+  name: string;
+  port: number;
+  profileEndpoint: string;
+  launderEndpoint: string;
+};
+
+export const SYNDICATES: SyndicateInfo[] = Array.from({ length: SYNDICATE_COUNT }, (_, index) => ({
+  name: `Syndicate${index + 1}`,
+  port: BASE_PORT + index,
+  profileEndpoint: `http://localhost:${BASE_PORT + index}/entrypoints/profile/invoke`,
+  launderEndpoint: `http://localhost:${BASE_PORT + index}/entrypoints/launder/invoke`,
+}));
+
+const fetcher = async <T>(url: string, input: any = {}, useProxy: boolean = false): Promise<T> => {
+  try {
+    // If useProxy is true, convert the URL to use proxy routes
+    let proxyUrl = url;
+    if (useProxy) {
+      if (url.includes("localhost:3000")) {
+        // Laundromat endpoint
+        const match = url.match(/\/entrypoints\/([^/]+)\/invoke/);
+        if (match) {
+          proxyUrl = `/api/laundromat/entrypoints/${match[1]}/invoke`;
+        }
+      } else {
+        // Syndicate endpoint
+        const match = url.match(/localhost:(\d+)\/entrypoints\/([^/]+)\/invoke/);
+        if (match) {
+          const port = match[1];
+          const endpoint = match[2];
+          proxyUrl = `/api/syndicate/${port}/entrypoints/${endpoint}/invoke`;
+        }
+      }
+    }
+
+    const response = await fetch(proxyUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ input }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const body = await response.json();
+    return body.output as T;
+  } catch (error) {
+    // Re-throw with more context for network errors
+    if (error instanceof TypeError && error.message.includes("Failed to fetch")) {
+      throw new Error(`Service unavailable: Unable to connect to ${url}`);
+    }
+    throw error;
+  }
+};
+
+export const getSyndicateProfile = async (
+  syndicate: SyndicateInfo
+): Promise<SyndicateProfileOutputType> => {
+  return fetcher<SyndicateProfileOutputType>(syndicate.profileEndpoint, {}, true);
+};
+
+export const getSyndicateLaunder = async (
+  syndicate: SyndicateInfo,
+  abstract: string
+): Promise<SyndicateLaunderOutputType> => {
+  return fetcher<SyndicateLaunderOutputType>(syndicate.launderEndpoint, { abstract }, true);
+};
+
+export const getLaundromatAbstract = async (): Promise<string> => {
+  const result = await fetcher<LaundromatAbstractOutputType>(
+    `${LAUNDROMAT_URL}/entrypoints/abstract/invoke`,
+    {},
+    true
+  );
+  return result.abstract;
+};
+
+export const checkSyndicateHealth = async (syndicate: SyndicateInfo): Promise<boolean> => {
+  // Use proxy route to avoid CORS issues
+  const url = `/api/health/${syndicate.port}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+    
+    if (!response.ok) {
+      return false;
+    }
+    
+    const data = await response.json();
+    return data && typeof data.ok === "boolean" && data.ok === true;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const checkLaundromatHealth = async (): Promise<boolean> => {
+  // Use proxy route to avoid CORS issues
+  const url = `/api/health/3000`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+    
+    if (!response.ok) {
+      return false;
+    }
+    
+    const data = await response.json();
+    return data && typeof data.ok === "boolean" && data.ok === true;
+  } catch (error) {
+    return false;
+  }
+};
+
+export type BalanceResult = {
+  name?: string;
+  address: string;
+  balance: bigint;
+  formatted: string;
+  formatted_cash: string;
+};
+
+// Fetch balance directly from Coinbase CDP API via proxy
+export const getBalance = async (address: string): Promise<BalanceResult> => {
+  // USDC on Base Sepolia
+  const USDC_CONTRACT = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+  
+  // Use proxy route to fetch balance directly from CDP API (API keys need to be server-side)
+  const response = await fetch("/api/balance-cdp", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ address, token: USDC_CONTRACT }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch balance: ${response.status}`);
+  }
+
+  const data = await response.json();
+  // Convert balance string back to bigint
+  return {
+    ...data,
+    balance: typeof data.balance === "string" ? BigInt(data.balance) : data.balance,
+  };
+};
+
+
