@@ -98,13 +98,16 @@ export const checkSyndicateHealth = async (syndicate: SyndicateInfo): Promise<bo
       },
     });
     
-    if (!response.ok) {
-      return false;
-    }
-    
+    // Even if response.ok is false, we should still check the JSON body
+    // because the proxy might return 503 with { ok: false } when the service is down
     const data = await response.json();
-    return data && typeof data.ok === "boolean" && data.ok === true;
+    
+    // Check if data exists and has ok property set to true
+    const isHealthy = data != null && typeof data === "object" && typeof data.ok === "boolean" && data.ok === true;
+    
+    return isHealthy;
   } catch (error) {
+    // Silently return false on error (network error, JSON parse error, etc.)
     return false;
   }
 };
@@ -120,13 +123,16 @@ export const checkLaundromatHealth = async (): Promise<boolean> => {
       },
     });
     
-    if (!response.ok) {
-      return false;
-    }
-    
+    // Even if response.ok is false, we should still check the JSON body
+    // because the proxy might return 503 with { ok: false } when the service is down
     const data = await response.json();
-    return data && typeof data.ok === "boolean" && data.ok === true;
+    
+    // Check if data exists and has ok property set to true
+    const isHealthy = data != null && typeof data === "object" && typeof data.ok === "boolean" && data.ok === true;
+    
+    return isHealthy;
   } catch (error) {
+    // Silently return false on error (network error, JSON parse error, etc.)
     return false;
   }
 };
@@ -139,34 +145,9 @@ export type BalanceResult = {
   formatted_cash: string;
 };
 
-// Fetch balance directly from Coinbase CDP API via proxy
-export const getBalance = async (address: string): Promise<BalanceResult> => {
-  // USDC on Base Sepolia
-  const USDC_CONTRACT = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
-  
-  // Use proxy route to fetch balance directly from CDP API (API keys need to be server-side)
-  const response = await fetch("/api/balance-cdp", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ address, token: USDC_CONTRACT }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch balance: ${response.status}`);
-  }
-
-  const data = await response.json();
-  // Convert balance string back to bigint
-  return {
-    ...data,
-    balance: typeof data.balance === "string" ? BigInt(data.balance) : data.balance,
-  };
-};
-
 export type ActivityData = {
   currentDay: number | null;
+  authority_balance?: number;
   days: Array<{
     day: number;
     abstract: string | null;
@@ -174,6 +155,8 @@ export type ActivityData = {
       strategy: string;
       amount_clean: number;
       amount_lost: number;
+      dirty_balance?: number;
+      clean_balance?: number;
       busted: boolean;
       success: boolean;
     }>;

@@ -30,9 +30,19 @@ type DayCellProps = {
 
 export const DayCell = ({ day, syndicateName, launderResult, isBusted, isLoading, activity }: DayCellProps) => {
   if (isLoading) {
+    // If busted, show BUSTED! instead of Laundering...
+    if (isBusted) {
+      return (
+        <div className="p-3 border rounded-lg flex flex-col gap-2 min-h-[100px] bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
+          <div className="text-xs font-medium text-red-600 dark:text-red-400 text-center mt-auto">
+            BUSTED!
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="p-3 border rounded-lg bg-muted/50 flex items-center justify-center min-h-[100px]">
-        <div className="text-xs text-muted-foreground">Loading...</div>
+        <div className="text-xs text-muted-foreground">Laundering...</div>
       </div>
     );
   }
