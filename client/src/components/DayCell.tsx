@@ -126,6 +126,11 @@ export const DayCell = ({ day, syndicateName, launderResult, isBusted, isLoading
           </div>
         )}
       </div>
+      {!success && (
+        <div className="text-xs font-medium text-red-600 dark:text-red-400 text-center mt-1">
+          Flopped!
+        </div>
+      )}
     </div>
   );
 };

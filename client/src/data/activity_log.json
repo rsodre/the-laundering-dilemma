@@ -1,52 +1,52 @@
 {
-  "currentDay": 3,
-  "authority_balance": 30000,
+  "currentDay": 5,
+  "authority_balance": 75000,
   "days": [
     {
       "day": 1,
-      "abstract": "Operations log for the last cycle is not available yet, so no concrete results can be reported today.  \n\nStill, be advised:\n- Enforcement pressure is constant and thresholds remain unforgiving.  \n- Moderation and timing will help keep attention low.  \n- Sudden spikes or coordinated surges in activity sharply increase bust risk.  \n\nProceed with focus, discipline, and caution—steady flows are easier to hide than bold moves.",
+      "abstract": "The latest cycle closed without incident reports or busts being flagged in my records, suggesting no recent coordinated operations under this channel. \n\nLooking ahead, conditions should be treated as uncertain but manageable: room for activity exists, yet pressure from oversight is assumed to be constant. Operate with discipline, avoid synchronizing large movements, and favor staggered, lower-profile strategies when in doubt. The risk of being busted is currently best regarded as moderate and highly sensitive to sudden spikes in overall activity.",
       "syndicates": {
-        "Syndicate5": {
+        "Syndicate1": {
           "strategy": "moderate",
-          "amount_clean": 10000,
+          "amount_clean": 12000,
           "amount_lost": 0,
-          "dirty_balance": 90000,
-          "clean_balance": 10000,
-          "busted": false,
-          "success": true
-        },
-        "Syndicate4": {
-          "strategy": "conservative",
-          "amount_clean": 5000,
-          "amount_lost": 0,
-          "dirty_balance": 95000,
-          "clean_balance": 5000,
+          "dirty_balance": 88000,
+          "clean_balance": 12000,
           "busted": false,
           "success": true
         },
         "Syndicate3": {
-          "strategy": "conservative",
-          "amount_clean": 5000,
+          "strategy": "moderate",
+          "amount_clean": 12000,
           "amount_lost": 0,
-          "dirty_balance": 95000,
-          "clean_balance": 5000,
-          "busted": false,
-          "success": true
-        },
-        "Syndicate1": {
-          "strategy": "aggressive",
-          "amount_clean": 25000,
-          "amount_lost": 0,
-          "dirty_balance": 75000,
-          "clean_balance": 25000,
+          "dirty_balance": 88000,
+          "clean_balance": 12000,
           "busted": false,
           "success": true
         },
         "Syndicate2": {
-          "strategy": "conservative",
+          "strategy": "moderate",
+          "amount_clean": 12000,
+          "amount_lost": 0,
+          "dirty_balance": 88000,
+          "clean_balance": 12000,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate4": {
+          "strategy": "aggressive",
           "amount_clean": 0,
-          "amount_lost": 5000,
-          "dirty_balance": 95000,
+          "amount_lost": 25000,
+          "dirty_balance": 75000,
+          "clean_balance": 0,
+          "busted": true,
+          "success": true
+        },
+        "Syndicate5": {
+          "strategy": "aggressive",
+          "amount_clean": 0,
+          "amount_lost": 25000,
+          "dirty_balance": 75000,
           "clean_balance": 0,
           "busted": true,
           "success": true
@@ -55,41 +55,32 @@
     },
     {
       "day": 2,
-      "abstract": "Yesterday’s flows pushed the overall activity into a **high‑tension zone**, edging close to the attention threshold without breaching it outright.  \n\nKey points:\n- One Syndicate was **busted**, losing its entire operation for the day—clear proof that oversight is active and adaptive.  \n- Most other operations passed clean, but the combined pressure suggests that repeated strong days like this raise systemic risk.  \n\nCurrent atmosphere: **elevated risk**.  \nRecommendation: dial back intensity and stagger larger moves; treat the coming days as a period for reduced profiles and tighter operational discipline.",
+      "abstract": "Two outfits operated cleanly with modest success, while two others were taken down hard, losing everything they moved and getting fully exposed. One group stayed quiet enough to avoid any incident being recorded against them.\n\nCollectively, activity levels pushed the environment into a very sensitive zone: oversight clearly reacted and struck decisively when signals grew too strong. The atmosphere is currently high risk—further heavy or synchronized moves are likely to attract quick attention. Operate lightly, stagger decisions, and assume that any visible spike could trigger more busts.",
       "syndicates": {
         "Syndicate3": {
           "strategy": "conservative",
-          "amount_clean": 5000,
+          "amount_clean": 8000,
           "amount_lost": 0,
-          "dirty_balance": 90000,
-          "clean_balance": 10000,
+          "dirty_balance": 80000,
+          "clean_balance": 20000,
           "busted": false,
           "success": true
+        },
+        "Syndicate2": {
+          "strategy": "conservative",
+          "amount_clean": 0,
+          "amount_lost": 0,
+          "dirty_balance": 88000,
+          "clean_balance": 20000,
+          "busted": false,
+          "success": false
         },
         "Syndicate1": {
-          "strategy": "moderate",
-          "amount_clean": 10000,
-          "amount_lost": 0,
-          "dirty_balance": 65000,
-          "clean_balance": 35000,
-          "busted": false,
-          "success": true
-        },
-        "Syndicate4": {
           "strategy": "conservative",
-          "amount_clean": 5000,
+          "amount_clean": 8000,
           "amount_lost": 0,
-          "dirty_balance": 90000,
-          "clean_balance": 10000,
-          "busted": false,
-          "success": true
-        },
-        "Syndicate5": {
-          "strategy": "conservative",
-          "amount_clean": 5000,
-          "amount_lost": 0,
-          "dirty_balance": 85000,
-          "clean_balance": 15000,
+          "dirty_balance": 80000,
+          "clean_balance": 20000,
           "busted": false,
           "success": true
         }
@@ -97,41 +88,89 @@
     },
     {
       "day": 3,
-      "abstract": "Overall activity for the last cycle remained **measured**, with flows staying safely below critical exposure levels. No single move appears to have triggered undue scrutiny.\n\nStatus highlights:\n- No Syndicate was busted in this round; all reported operations cleared without explicit enforcement hits.\n- The pattern reflects **moderate, steady laundering** rather than sharp spikes, which helps diffuse attention.\n\nCurrent atmosphere: **moderate risk but stable**.  \nMaintaining this profile—avoiding sudden volume jumps or synchronized heavy days—should help keep law‑enforcement focus from tightening further.",
+      "abstract": "Operations stayed relatively restrained, with several groups moving funds cleanly and without immediate losses or arrests reported. No fresh takedowns were triggered during this cycle.\n\nThe environment, however, remains tense after prior crackdowns. Current risk should be treated as elevated but not extreme: coordinated surges or sudden jumps in volume could still draw unwanted focus. Favor steady, disciplined activity and avoid patterns that could be read as another collective push.",
+      "syndicates": {
+        "Syndicate1": {
+          "strategy": "moderate",
+          "amount_clean": 12000,
+          "amount_lost": 0,
+          "dirty_balance": 68000,
+          "clean_balance": 32000,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate2": {
+          "strategy": "moderate",
+          "amount_clean": 12000,
+          "amount_lost": 0,
+          "dirty_balance": 76000,
+          "clean_balance": 32000,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate3": {
+          "strategy": "moderate",
+          "amount_clean": 12000,
+          "amount_lost": 0,
+          "dirty_balance": 68000,
+          "clean_balance": 32000,
+          "busted": false,
+          "success": true
+        }
+      }
+    },
+    {
+      "day": 4,
+      "abstract": "Several outfits moved funds with consistent, disciplined activity, keeping outcomes clean and avoiding fresh losses or arrests. No new busts were recorded in this cycle.\n\nWhile the overall climate shows signs of stability compared to earlier crackdowns, scrutiny should still be assumed active. The current atmosphere carries a moderate risk of being busted: coordinated spikes or abrupt increases in intensity could quickly shift it upward. Maintain staggered operations and avoid drawing collective attention.",
       "syndicates": {
         "Syndicate1": {
           "strategy": "aggressive",
           "amount_clean": 25000,
           "amount_lost": 0,
-          "dirty_balance": 40000,
-          "clean_balance": 60000,
+          "dirty_balance": 43000,
+          "clean_balance": 57000,
           "busted": false,
-          "success": true
-        },
-        "Syndicate4": {
-          "strategy": "moderate",
-          "amount_clean": 10000,
-          "amount_lost": 0,
-          "dirty_balance": 80000,
-          "clean_balance": 20000,
-          "busted": false,
-          "success": true
-        },
-        "Syndicate5": {
-          "strategy": "aggressive",
-          "amount_clean": 0,
-          "amount_lost": 25000,
-          "dirty_balance": 60000,
-          "clean_balance": 15000,
-          "busted": true,
           "success": true
         },
         "Syndicate3": {
           "strategy": "moderate",
-          "amount_clean": 10000,
+          "amount_clean": 12000,
           "amount_lost": 0,
-          "dirty_balance": 80000,
-          "clean_balance": 20000,
+          "dirty_balance": 56000,
+          "clean_balance": 44000,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate2": {
+          "strategy": "aggressive",
+          "amount_clean": 0,
+          "amount_lost": 25000,
+          "dirty_balance": 51000,
+          "clean_balance": 32000,
+          "busted": true,
+          "success": true
+        }
+      }
+    },
+    {
+      "day": 5,
+      "abstract": "One crew took a major clean win, another moved a solid amount without incident, while a third was hit hard and fully taken down, losing everything it pushed. The remaining outfits stayed out of the spotlight this round.\n\nThe combined activity pressed noticeably against the system’s tolerance, and enforcement clearly reacted to one exposed channel. The atmosphere is now high risk: further large or conspicuous moves could easily trigger more busts. Proceed with caution, shorten your exposure windows, and avoid synchronized surges.",
+      "syndicates": {
+        "Syndicate1": {
+          "strategy": "conservative",
+          "amount_clean": 8000,
+          "amount_lost": 0,
+          "dirty_balance": 35000,
+          "clean_balance": 65000,
+          "busted": false,
+          "success": true
+        },
+        "Syndicate3": {
+          "strategy": "conservative",
+          "amount_clean": 8000,
+          "amount_lost": 0,
+          "dirty_balance": 48000,
+          "clean_balance": 52000,
           "busted": false,
           "success": true
         }

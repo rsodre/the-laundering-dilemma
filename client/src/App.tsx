@@ -118,6 +118,14 @@ export const App = () => {
   const loadingProfilesRef = useRef<Set<string>>(new Set());
 
   const loadSyndicateProfile = useCallback(async (syndicate: SyndicateInfo, force: boolean = false) => {
+    // Don't fetch if syndicate is offline (unless forced)
+    if (!force) {
+      const isHealthy = healthStatusRef.current[syndicate.name] ?? false;
+      if (!isHealthy) {
+        return;
+      }
+    }
+
     // Don't fetch if profile already exists (unless forced)
     if (!force && profiles[syndicate.name] !== null && profiles[syndicate.name] !== undefined) {
       return;

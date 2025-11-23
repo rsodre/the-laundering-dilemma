@@ -101,7 +101,7 @@ export const ExperimentGrid = ({ daysData, profiles, currentDay, healthStatus, b
   };
 
   return (
-    <Card>
+    <Card className="max-w-[1050px] mx-auto">
       <CardContent>
         <div className="mb-4">
           <ServiceStatus
@@ -111,9 +111,8 @@ export const ExperimentGrid = ({ daysData, profiles, currentDay, healthStatus, b
             seizedBalance={seizedBalance}
           />
         </div>
-        <div className="overflow-x-auto">
-          <div className="inline-block min-w-full">
-            <table className="w-full border-collapse">
+        <div>
+          <table className="w-full border-collapse">
               <thead>
                 <tr>
                   <th className="sticky left-0 z-10 bg-background border p-2 text-left font-semibold min-w-[80px]">
@@ -272,7 +271,6 @@ export const ExperimentGrid = ({ daysData, profiles, currentDay, healthStatus, b
                 })}
               </tbody>
             </table>
-          </div>
         </div>
       </CardContent>
     </Card>
