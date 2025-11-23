@@ -32,6 +32,7 @@ Features:
 * Pyth [Pyth](https://www.pyth.network/) (agent personalities)
 * Vercel [AI SDK](https://ai-sdk.dev/docs/introduction)
 * [mprocs](https://github.com/pvolok/mprocs) to run all agents in parallel
+* React + Shadcn + Tailwind client, 100% vibe coded in Cursor.
 
 
 ## Project Structure
@@ -41,6 +42,7 @@ Features:
 * `/agents/request`: Scripts for testing, trigger agents, check balances, etc.
 * `/sequencer`: Run the experiment in sequence.
 * `/libs`: Misc functions used by all packages.
+* `/client`: Displays the experiment in real time.
 
 
 ## Environment setup
@@ -114,6 +116,12 @@ Terminal 3: Trigger **Syndicate** laundering...
 ```sh
 $ cd agents/request
 $ bun run launder
+```
+
+Checking balances...
+```sh
+$ cd agents/request
+$ bun run balances
 ```
 
 

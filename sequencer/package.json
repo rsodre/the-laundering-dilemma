@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
+    "clean": "bun run src/clean.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

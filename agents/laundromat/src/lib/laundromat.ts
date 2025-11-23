@@ -121,7 +121,7 @@ export async function laundromat_handler(strategy: Strategy, ctx: any) {
     amount_clean = (amount - amount_lost);
   } else {
 
-    if (_daily_amount_laundered + amount >= LAUNDER_THRESHOLD) {
+    if (_daily_amount_laundered + amount > LAUNDER_THRESHOLD) {
       busted = true;
     }
 

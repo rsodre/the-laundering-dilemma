@@ -4,42 +4,9 @@ import { getLaundromatAbstract, getSyndicateLaunder, getSyndicateProfile } from 
 import { shuffle, sleep } from "libs/src/misc";
 import { getServerAccount, getBalance } from "libs/src";
 import { Address } from "viem";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { _log, _saveLog } from "./log";
 
 config();
-
-
-//---------------------------------------------------------
-// Log
-//
-type LogType = {
-  currentDay: number;
-  days: {
-    day: number;
-    abstract: string;
-    syndicates: Record<string, {
-      strategy: string;
-      amount_clean: number;
-      amount_lost: number;
-      busted: boolean;
-      success: boolean;
-    }>;
-  }[];
-};
-let _log: LogType = {
-  currentDay: 0,
-  days: [],
-};
-const _saveLog = async () => {
-  const filePath = path.resolve(process.cwd(), "../client/src/data/activity_log.json");
-  try {
-    await writeFile(filePath, JSON.stringify(_log, null, 2), "utf-8");
-    console.log(`Activity log saved to ${filePath}`);
-  } catch (error) {
-    console.error("Failed to save activity log:", error);
-  }
-};
 
 
 

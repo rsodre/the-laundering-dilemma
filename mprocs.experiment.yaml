@@ -45,6 +45,10 @@ procs:
       wait-port 3105
       # run laundromat in default port 3000
       bun run dev
+  clean:
+    cwd: sequencer
+    shell: |
+      bun run clean
   sequencer:
     cwd: sequencer
     shell: |
