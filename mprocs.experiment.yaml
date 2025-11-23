@@ -11,7 +11,7 @@ procs:
     shell: |
       export PORT=3102
       export SYNDICATE_NAME=Syndicate2
-      export BOSS_NAME="Sleazy Mykie"
+      export BOSS_NAME="Sleazy Mike"
       bun run dev
   Syndicate3:
     cwd: agents/syndicate
@@ -20,6 +20,20 @@ procs:
       export SYNDICATE_NAME=Syndicate3
       export BOSS_NAME="Slippery Squiddy"
       bun run dev
+  Syndicate4:
+    cwd: agents/syndicate
+    shell: |
+      export PORT=3104
+      export SYNDICATE_NAME=Syndicate4
+      export BOSS_NAME="Dopey Danny"
+      bun run dev
+  Syndicate5:
+    cwd: agents/syndicate
+    shell: |
+      export PORT=3105
+      export SYNDICATE_NAME=Syndicate5
+      export BOSS_NAME="Chalky Charlie"
+      bun run dev
   laundromat:
     cwd: agents/laundromat
     shell: |
@@ -27,6 +41,8 @@ procs:
       wait-port 3101
       wait-port 3102
       wait-port 3103
+      wait-port 3104
+      wait-port 3105
       # run laundromat in default port 3000
       bun run dev
   sequencer:
@@ -35,7 +51,7 @@ procs:
       echo "waiting for laundromat to start..."
       wait-port 3000
       bun run start
-  client:
-    cwd: client
-    shell: |
-      bun run dev
+  # client:
+  #   cwd: client
+  #   shell: |
+  #     bun run dev

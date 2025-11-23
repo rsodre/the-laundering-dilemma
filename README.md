@@ -4,9 +4,8 @@ For ETHGlobal Buenos Aires 2025.
 
 By Roger S. Mataleone [@matalecode](https://x.com/matalecode)
 
-## An Agentic Social Experiment
+## An Agentic Social Experiment • The Prisoner's Dilemma on x402
 
-Based on The Prisoner's Dilemma
 
 
 

@@ -4,9 +4,48 @@ import { getLaundromatAbstract, getSyndicateLaunder, getSyndicateProfile } from 
 import { shuffle, sleep } from "libs/src/misc";
 import { getServerAccount, getBalance } from "libs/src";
 import { Address } from "viem";
+import { writeFile } from "fs/promises";
+import path from "path";
 
 config();
 
+
+//---------------------------------------------------------
+// Log
+//
+type LogType = {
+  currentDay: number;
+  days: {
+    day: number;
+    abstract: string;
+    syndicates: Record<string, {
+      strategy: string;
+      amount_clean: number;
+      amount_lost: number;
+      busted: boolean;
+      success: boolean;
+    }>;
+  }[];
+};
+let _log: LogType = {
+  currentDay: 0,
+  days: [],
+};
+const _saveLog = async () => {
+  const filePath = path.resolve(process.cwd(), "../client/src/data/activity_log.json");
+  try {
+    await writeFile(filePath, JSON.stringify(_log, null, 2), "utf-8");
+    console.log(`Activity log saved to ${filePath}`);
+  } catch (error) {
+    console.error("Failed to save activity log:", error);
+  }
+};
+
+
+
+//---------------------------------------------------------
+// Syndicates
+//
 export type SyndicateType = {
   name: string;
   port: string;
@@ -22,18 +61,33 @@ const SYDICATES: SyndicateType[] = Array.from({ length: SYNDICATE_COUNT }, (_, i
 }));
 console.log(`>>> SYDICATES >>>`, SYDICATES);
 
+
 async function main(): Promise<void> {
+
+  await _saveLog();
 
   //
   // Days loop
-  for (let dayNumber = 1; dayNumber <= DAYS_COUNT; dayNumber++) {
+  for (let dayIndex = 0; dayIndex < DAYS_COUNT; dayIndex++) {
+    const dayNumber = dayIndex + 1;
     const shuffledSyndicates = shuffle(SYDICATES);
     console.log(`-------- Starting Day [${dayNumber}]...`);
+
+    _log.currentDay = dayNumber;
+    _log.days.push({
+      day: dayNumber,
+      abstract: '',
+      syndicates: {},
+    });
+    _saveLog();
 
     // TODO: get the abstract from the previous day
     const abstract_endpoint = `http://localhost:3000/entrypoints/abstract/invoke`;
     const abstract = await getLaundromatAbstract(abstract_endpoint);
     console.log(`-------- Abstract:`, abstract);
+
+    _log.days[dayIndex].abstract = abstract;
+    _saveLog();
 
     //
     // Syndicates loop
@@ -50,6 +104,16 @@ async function main(): Promise<void> {
       console.log(`[${syndicate.name}] laundering...`);
       const launder = await getSyndicateLaunder(syndicate, abstract);
       console.log(`[${syndicate.name}] launder result:`, launder);
+
+      // log for the client...
+      _log.days[dayIndex].syndicates[syndicate.name] = {
+        strategy: launder.strategy,
+        amount_clean: launder.amount_clean,
+        amount_lost: launder.amount_lost,
+        busted: launder.busted,
+        success: launder.success,
+      };
+      _saveLog();
 
       // wait a bit...
       // await sleep(1000);
