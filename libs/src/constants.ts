@@ -3,19 +3,19 @@
 // Laundering market conditions
 //
 
-export const DAYS_COUNT = 3;
+export const DAYS_COUNT = 5;
 export const SYNDICATE_COUNT = 5;
 export const STARTING_DIRTY_CASH = 100_000;
-export const LAUNDER_THRESHOLD = 45_000;
+export const LAUNDER_THRESHOLD = 50_000;
 export const LAUNDROMAT_BASE_URL = 'http://localhost:3000';
 export const FUNDED_ACCOUNT_NAME = "FundedAccount";
 export const AUTHORITY_ACCOUNT_NAME = "AuthorityAccount";
 
 // laundering amounts
-export const CONSERVATIVE_AMOUNT = 5_000;
-export const MODERATE_AMOUNT = 10_000;
+export const CONSERVATIVE_AMOUNT = 8_000;
+export const MODERATE_AMOUNT = 12_000;
 export const AGGRESSIVE_AMOUNT = 25_000;
-export const PAY_TAXES_AMOUNT = 20_000;
+export const PAY_TAXES_AMOUNT = 25_000;
 
 
 
