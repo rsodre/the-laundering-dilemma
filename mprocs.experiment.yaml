@@ -9,6 +9,7 @@ procs:
   Syndicate2:
     cwd: agents/syndicate
     shell: |
+      wait-port 3101
       export PORT=3102
       export SYNDICATE_NAME=Syndicate2
       export BOSS_NAME="Sleazy Mike"
@@ -16,6 +17,7 @@ procs:
   Syndicate3:
     cwd: agents/syndicate
     shell: |
+      wait-port 3102
       export PORT=3103
       export SYNDICATE_NAME=Syndicate3
       export BOSS_NAME="Slippery Squiddy"
@@ -23,6 +25,7 @@ procs:
   Syndicate4:
     cwd: agents/syndicate
     shell: |
+      wait-port 3103
       export PORT=3104
       export SYNDICATE_NAME=Syndicate4
       export BOSS_NAME="Dopey Danny"
@@ -30,6 +33,7 @@ procs:
   Syndicate5:
     cwd: agents/syndicate
     shell: |
+      wait-port 3104
       export PORT=3105
       export SYNDICATE_NAME=Syndicate5
       export BOSS_NAME="Chalky Charlie"
@@ -38,10 +42,6 @@ procs:
     cwd: agents/laundromat
     shell: |
       echo "waiting for syndicates to start..."
-      wait-port 3101
-      wait-port 3102
-      wait-port 3103
-      wait-port 3104
       wait-port 3105
       # run laundromat in default port 3000
       bun run dev
